@@ -1,17 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 
-const HomepageBanner = () => {
+const HomepageBanner = ({ navigation }) => {
 
     return (
         <>
             <View style={homepageBanner.container}>
-                <View style={homepageBanner.userContainer}>
-                    <Text style={homepageBanner.userPic}>
-                        Pic
-                    </Text>
-                </View>
+                <TouchableOpacity style={homepageBanner.userContainer}
+                onPress={() => navigation.navigate('User')}
+                >
+                    <Image style={homepageBanner.userPic}
+                    source={require('../../Assets/images/Taylor_Avatar.png')}
+                    />
+                </TouchableOpacity>
                 <View style={homepageBanner.textContainer}>
                     <Text style={homepageBanner.headerText}>
                         Welcome Back, Taylor
@@ -26,7 +28,7 @@ const homepageBanner = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "row",
-        height: 75,
+        height: 70,
         backgroundColor: "#1B1F22",
         justifyContent: "center",
         alignItems: "center"
@@ -41,7 +43,6 @@ const homepageBanner = StyleSheet.create({
         width: 50,
         backgroundColor: "#CCCCCC",
         borderRadius: 100 / 2,
-        marginEnd: 10,
     },
     textContainer: {
         flexDirection: "row",

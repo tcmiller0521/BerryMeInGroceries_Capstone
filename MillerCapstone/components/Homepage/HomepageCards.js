@@ -28,9 +28,9 @@ const DATA = [
     },
 ]
 
-let colors = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1",  ]
+let colors = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1",]
 
-const HomepageCards = () => {
+const HomepageCards = ({ navigation }) => {
 
     return (
         <>
@@ -43,9 +43,14 @@ const HomepageCards = () => {
                         data={DATA}
                         horizontal={true}
                         renderItem={({ item, index }) => (
-                            <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
-                                <Text >{item.title}</Text>
-                            </View>
+                            <TouchableOpacity
+                                key={item.key}
+                                onPress={() => navigation.navigate('Wallet')}
+                            >
+                                <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
+                                    <Text >{item.title}</Text>
+                                </View>
+                            </TouchableOpacity>
                         )}
                         keyExtractor={item => item.id}
                     />
@@ -77,20 +82,20 @@ const homepageCards = StyleSheet.create({
     listItem: {
         margin: 10,
         marginLeft: 0,
-        height: 125,
-        width: 125,
+        height: 115,
+        width: 115,
         borderRadius: 100 / 5
     },
     newListContainer: {
         margin: 5,
         justifyContent: "center",
-        alignItems:"center",
+        alignItems: "center",
     },
     newListButton: {
         backgroundColor: "#363E44",
         width: 300,
         height: 50,
-        borderRadius: 100/4,
+        borderRadius: 100 / 4,
         alignItems: "center",
         justifyContent: "center",
     },

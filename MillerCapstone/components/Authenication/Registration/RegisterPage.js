@@ -18,7 +18,7 @@ const RegisterPage = ({navigation}) => {
 
 const register = StyleSheet.create({
     container: {
-        height: 1020,
+        flex: 1,
         backgroundColor: "#2D3339"
     }
 

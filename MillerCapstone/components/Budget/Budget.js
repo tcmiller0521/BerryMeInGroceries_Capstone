@@ -1,29 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const HomepageBudget = () => {
+const Budget = () => {
 
     return (
-        <View style={homepageBudget.container}>
-            <View style={homepageBudget.headerContainer}>
-                <Text style={homepageBudget.headerText}>
-                    Budget
-                </Text>
-            </View>
-            <View style={homepageBudget.budgetContainer}>
-                <View style={[homepageBudget.budgetBox, homepageBudget.budgetOne]}>
-                    <Text style={homepageBudget.budgetText}>
+        <View style={budget.container}>
+            <View style={budget.budgetContainer}>
+                <View style={[budget.budgetBox, budget.budgetOne]}>
+                    <Text style={budget.budgetText}>
                         Spent
                     </Text>
-                    <Text style={homepageBudget.amountText}>
+                    <Text style={budget.amountText}>
                         $$$
                     </Text>
                 </View>
-                <View style={[homepageBudget.budgetBox, homepageBudget.budgetTwo]}>
-                    <Text style={homepageBudget.budgetText}>
+                <View style={[budget.budgetBox, budget.budgetTwo]}>
+                    <Text style={budget.budgetText}>
                         Remaining
                     </Text>
-                    <Text style={homepageBudget.amountText}>
+                    <Text style={budget.amountText}>
                         $$$
                     </Text>
                 </View>
@@ -32,7 +27,7 @@ const HomepageBudget = () => {
     )
 }
 
-const homepageBudget = StyleSheet.create({
+const budget = StyleSheet.create({
     container: {
         marginTop: 15,
         marginBottom: 10,
@@ -49,7 +44,8 @@ const homepageBudget = StyleSheet.create({
     budgetContainer: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-evenly"
+        justifyContent: "space-evenly",
+        marginTop: 15,
     },
     budgetBox: {
         width: 150,
@@ -59,10 +55,10 @@ const homepageBudget = StyleSheet.create({
         justifyContent: "center",
     },
     budgetOne: {
-        backgroundColor: "#A75889",
+        backgroundColor: "#4F7CAC",
     },
     budgetTwo: {
-        backgroundColor: "#7B6A9B",
+        backgroundColor: "#F185B3",
     },
     budgetText: {
         color: "#fff",
@@ -76,4 +72,4 @@ const homepageBudget = StyleSheet.create({
 })
 
 
-export default HomepageBudget;
+export default Budget;

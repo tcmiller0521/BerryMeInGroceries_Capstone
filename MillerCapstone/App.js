@@ -7,16 +7,27 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginPage from './components/Authenication/Login/LoginPage';
 import RegisterPage from './components/Authenication/Registration/RegisterPage';
 import Homepage from './components/Homepage/Homepage';
+import BudgetPage from './components/Budget/BudgetPage';
+import ListPage from './components/Lists/ListPage';
+import WalletPage from './components/Wallet/WalletPage';
+import UserProfile from './components/UserProfile/UserProfile';
 
 const Stack = createNativeStackNavigator()
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}>
         <Stack.Screen name="Login" component={LoginPage}  />
         <Stack.Screen name="Register" component={RegisterPage} />
         <Stack.Screen name="Homepage" component={Homepage} />
+        <Stack.Screen name="Budget" component={BudgetPage} />
+        <Stack.Screen name="Lists" component={ListPage} />
+        <Stack.Screen name="Wallet" component={WalletPage} />
+        <Stack.Screen name="User" component={UserProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,27 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
 
 import HomepageBanner from "./HomepageBanner";
 import HomepageBudget from "./HomepageBudget";
 import HomepageLists from "./HomepageLists";
 import HomepageCards from "./HomepageCards";
+import BottomNav from "../Navigation/BottomNav";
 
-const Homepage = () => {
+const Homepage = ({navigation}) => {
     return (
         <>
-            <View style={homepage.container}>
-                <HomepageBanner />
+            <SafeAreaView style={homepage.container}>
+                <HomepageBanner navigation={navigation}/>
                 <HomepageBudget />
-                <HomepageLists />
-                <HomepageCards />
-            </View>
+                <HomepageLists navigation={navigation}/>
+                <HomepageCards navigation={navigation}/>
+                <BottomNav navigation={navigation} />
+            </SafeAreaView>
         </>
     )
 }
 
 const homepage = StyleSheet.create({
     container: {
-        height: 1080,
+        flex: 1,
         backgroundColor: "#2D3339"
     }
 

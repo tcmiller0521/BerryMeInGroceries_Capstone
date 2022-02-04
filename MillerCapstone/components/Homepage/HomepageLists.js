@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TouchableHighlight } from 'react-native'
 
 const DATA = [
     {
         id: 1,
+        key: "item1",
         title: "First Item"
     },
     {
@@ -30,7 +31,7 @@ const DATA = [
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const HomepageLists = () => {
+const HomepageLists = ({ navigation }) => {
 
     return (
         <>
@@ -43,9 +44,14 @@ const HomepageLists = () => {
                         data={DATA}
                         horizontal={true}
                         renderItem={({ item, index }) => (
-                            <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
-                                <Text >{item.title}</Text>
-                            </View>
+                            <TouchableOpacity
+                                key={item.key}
+                                onPress={() => navigation.navigate('Wallet')}
+                            >
+                                <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
+                                    <Text >{item.title}</Text>
+                                </View>
+                            </TouchableOpacity>
                         )}
                         keyExtractor={item => item.id}
                     />
@@ -77,20 +83,20 @@ const homepageLists = StyleSheet.create({
     listItem: {
         margin: 10,
         marginLeft: 0,
-        height: 125,
-        width: 125,
+        height: 115,
+        width: 115,
         borderRadius: 100 / 5
     },
     newListContainer: {
         margin: 5,
         justifyContent: "center",
-        alignItems:"center",
+        alignItems: "center",
     },
     newListButton: {
         backgroundColor: "#363E44",
         width: 300,
         height: 50,
-        borderRadius: 100/4,
+        borderRadius: 100 / 4,
         alignItems: "center",
         justifyContent: "center",
     },
