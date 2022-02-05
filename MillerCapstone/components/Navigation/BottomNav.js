@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import HomeIcon from '../../Assets/images/HomeIcon.png';
 
 
 const BottomNav = ({navigation}) => {

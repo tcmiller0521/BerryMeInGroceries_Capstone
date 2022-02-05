@@ -1,12 +1,45 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+
+const DATA = [
+    {
+        id: 1,
+        key: "item1",
+        title: "First Budget",
+        spent: "$$$",
+        remaining: "$$$"
+    },
+    {
+        id: 2,
+        key: "item1",
+        title: "First Budget",
+        spent: "$$$",
+        remaining: "$$$"
+    },
+    {
+        id: 3,
+        key: "item1",
+        title: "First Budget",
+        spent: "$$$",
+        remaining: "$$$"
+    },
+
+]
+
+let colorOne = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
+let colorTwo = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1"]
 
 const Budget = () => {
 
-    return (
-        <View style={budget.container}>
+    const renderItem = ({ item, index }) => (
+        <View>
+            <View style={budget.headerContainer}>
+                <Text style={budget.headerText}>
+                    Budget One
+                </Text>
+            </View>
             <View style={budget.budgetContainer}>
-                <View style={[budget.budgetBox, budget.budgetOne]}>
+                <View style={[{ backgroundColor: colorOne[index % colorOne.length] }, budget.budgetBox]}>
                     <Text style={budget.budgetText}>
                         Spent
                     </Text>
@@ -14,7 +47,7 @@ const Budget = () => {
                         $$$
                     </Text>
                 </View>
-                <View style={[budget.budgetBox, budget.budgetTwo]}>
+                <View style={[{ backgroundColor: colorTwo[index % colorTwo.length] }, budget.budgetBox]}>
                     <Text style={budget.budgetText}>
                         Remaining
                     </Text>
@@ -24,6 +57,31 @@ const Budget = () => {
                 </View>
             </View>
         </View>
+    );
+
+    return (
+        <>
+            <View style={budget.container}>
+                <FlatList
+                    data={DATA}
+                    horizontal={true}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
+            </View>
+            <View style={budget.newListContainer}>
+                <TouchableOpacity style={budget.newListButton}>
+                    <Text style={budget.headerText}>
+                        + New Budget
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={budget.newListButton}>
+                    <Text style={budget.headerText}>
+                        Edit Budget
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </>
     )
 }
 
@@ -31,6 +89,10 @@ const budget = StyleSheet.create({
     container: {
         marginTop: 15,
         marginBottom: 10,
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        marginStart: 30,
+        marginEnd: 30
     },
     headerText: {
         color: "#fff",
@@ -39,11 +101,9 @@ const budget = StyleSheet.create({
         textAlign: "center"
     },
     headerContainer: {
-        marginBottom: 8,
+        marginBottom: 0,
     },
     budgetContainer: {
-        display: "flex",
-        flexDirection: "row",
         justifyContent: "space-evenly",
         marginTop: 15,
     },
@@ -53,12 +113,7 @@ const budget = StyleSheet.create({
         borderRadius: 100 / 4,
         alignItems: "center",
         justifyContent: "center",
-    },
-    budgetOne: {
-        backgroundColor: "#4F7CAC",
-    },
-    budgetTwo: {
-        backgroundColor: "#F185B3",
+        margin: 8,
     },
     budgetText: {
         color: "#fff",
@@ -68,7 +123,22 @@ const budget = StyleSheet.create({
     amountText: {
         color: "#fff",
         fontFamily: "Roboto-Regular"
-    }
+    },
+    newListContainer: {
+        margin: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+    },
+    newListButton: {
+        backgroundColor: "#363E44",
+        width: 300,
+        height: 50,
+        borderRadius: 100 / 4,
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+    },
 })
 
 

@@ -11,6 +11,9 @@ import BudgetPage from './components/Budget/BudgetPage';
 import ListPage from './components/Lists/ListPage';
 import WalletPage from './components/Wallet/WalletPage';
 import UserProfile from './components/UserProfile/UserProfile';
+import StoresPage from './components/MyStores/StoresPage';
+import UserSettings from './components/UserSettings.js/UserSettingsPage';
+
 
 const Stack = createNativeStackNavigator()
 
@@ -27,7 +30,9 @@ const App = () => {
         <Stack.Screen name="Budget" component={BudgetPage} />
         <Stack.Screen name="Lists" component={ListPage} />
         <Stack.Screen name="Wallet" component={WalletPage} />
-        <Stack.Screen name="User" component={UserProfile} />
+        <Stack.Screen name="Profile" component={UserProfile} />
+        <Stack.Screen name="Stores" component={StoresPage} />
+        <Stack.Screen name="Settings" component={UserSettings} />
       </Stack.Navigator>
     </NavigationContainer>
   )

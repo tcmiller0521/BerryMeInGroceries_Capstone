@@ -1,17 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const UserProfile = () => {
+import UserInfo from "./UserInfo";
+import UserOptions from "./UserOptions";
+
+const UserProfile = ({ navigation }) => {
 
     return (
         <>
-            <View>
-                <Text>
-                    User Profile
-                </Text>
+            <View style={userProfile.container}>
+                <UserInfo />
+                <UserOptions navigation={navigation}/>
             </View>
         </>
     )
 }
+
+const userProfile = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#2D3339"
+    }
+
+})
 
 export default UserProfile;
