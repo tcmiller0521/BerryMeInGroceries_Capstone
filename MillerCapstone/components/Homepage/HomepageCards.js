@@ -45,7 +45,7 @@ const HomepageCards = ({ navigation }) => {
                         renderItem={({ item, index }) => (
                             <TouchableOpacity
                                 key={item.key}
-                                onPress={() => navigation.navigate('Wallet')}
+                                onPress={() => navigation.navigate('Card')}
                             >
                                 <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
                                     <Text >{item.title}</Text>

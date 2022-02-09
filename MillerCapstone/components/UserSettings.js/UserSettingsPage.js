@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import UserInfo from "../UserProfile/UserInfo";
+import UpdateUserInfo from "./UpdateUserInfo";
 import UserSettingsBanner from "./UserSettingsBanner";
 
 
@@ -11,6 +12,7 @@ const UserSettings = ({ navigation }) => {
             <View style={userSettings.container}>
                 <UserSettingsBanner navigation={navigation}/>
                 <UserInfo />
+                <UpdateUserInfo />
             </View>
         </>
     )

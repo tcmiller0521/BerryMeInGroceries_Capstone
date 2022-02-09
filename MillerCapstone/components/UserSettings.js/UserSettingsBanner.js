@@ -11,8 +11,11 @@ const UserSettingsBanner = ({ navigation }) => {
                 onPress={() => navigation.navigate('Profile')}
                 >
                     <Image style={userSettingsBanner.userPic}
-                    source={require('../../Assets/images/Taylor_Avatar.png')}
+                    source={require('../../Assets/images/BackArrow.png')}
                     />
+                    <Text style={userSettingsBanner.headerText}>
+                        Back
+                    </Text>
                 </TouchableOpacity>
             </View>
         </>
@@ -29,12 +32,12 @@ const userSettingsBanner = StyleSheet.create({
     },
     userContainer: {
         marginLeft: 25,
+        display: "flex",
+        flexDirection: "row"
     },
     userPic: {
-        height: 50,
+        height: 25,
         width: 50,
-        backgroundColor: "#CCCCCC",
-        borderRadius: 100 / 2,
     },
     textContainer: {
         flexDirection: "row",
@@ -45,6 +48,7 @@ const userSettingsBanner = StyleSheet.create({
         color: "#fff",
         fontFamily: "Coolvetica-Regular",
         fontSize: 22,
+        marginLeft: 10
     }
 
 })

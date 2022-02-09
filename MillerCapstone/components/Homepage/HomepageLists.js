@@ -46,7 +46,7 @@ const HomepageLists = ({ navigation }) => {
                         renderItem={({ item, index }) => (
                             <TouchableOpacity
                                 key={item.key}
-                                onPress={() => navigation.navigate('Wallet')}
+                                onPress={() => navigation.navigate('GroceryList')}
                             >
                                 <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
                                     <Text >{item.title}</Text>
