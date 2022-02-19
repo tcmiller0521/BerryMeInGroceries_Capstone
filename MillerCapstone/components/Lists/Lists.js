@@ -1,65 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-
-
-const DATA = [
-    {
-        id: 1,
-        title: "First Item"
-    },
-    {
-        id: 2,
-        title: "Second Item"
-    },
-    {
-        id: 3,
-        title: "Third Item"
-    },
-    {
-        id: 4,
-        title: "Fourth Item"
-    },
-    {
-        id: 5,
-        title: "Fifth Item"
-    },
-    {
-        id: 6,
-        title: "Sixth Item"
-    },
-    {
-        id: 7,
-        title: "Sixth Item"
-    },
-]
+import { useDispatch, useSelector } from "react-redux";
+import { retrieveLists } from "../../actions/lists";
+import { selectGroceryList } from "../../state/listSlice";
+import GroceryList from "./GroceryList";
+import ListModal from "./ListModal";
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const Lists = ({ navigation }) => {
+const Lists = ({ navigation, setCurrentListId, currentListId }) => {
+
+    const allLists = useSelector(selectGroceryList);
+
+    const ListEmptyComponent = ({data}) => {
+        return (
+            <>
+                <View>
+                    <Text style={lists.listText}>
+                        No Lists Here
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({item, index}) => {
+
+        return (
+            <View>
+                <TouchableOpacity
+                    key={item._id}
+                    onPress={() => navigation.navigate('Wallet')}
+                >
+                    <View style={[{ backgroundColor: colors[index % colors.length] }, lists.listItem]}>
+                        <Text style={lists.listText}>{item.listName}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     return (
         <>
-            <View style={lists.newListContainer}>
-                <TouchableOpacity style={lists.newListButton}>
-                    <Text style={lists.listHeader}>
-                        + New List
-                    </Text>
-                </TouchableOpacity>
+            <View style={lists.modalContainer}>
+                <ListModal setCurrentListId={setCurrentListId} currentListId={currentListId} />
             </View>
             <View style={lists.container}>
                 <FlatList
-                    data={DATA}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity
-                            key={item.key}
-                            onPress={() => navigation.navigate('Wallet')}
-                        >
-                            <View style={[{ backgroundColor: colors[index % colors.length] }, lists.listItem]}>
-                                <Text style={lists.listText}>{item.title}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={item => item.id}
+                    data={allLists}
+                    ListEmptyComponent={ListEmptyComponent}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => String(item._id)}
                 />
             </View>
         </>
@@ -68,9 +59,13 @@ const Lists = ({ navigation }) => {
 
 const lists = StyleSheet.create({
     container: {
-        justifyContent: "center",
         alignItems: "center",
-        height: 500
+        height: 475,
+        marginBottom: 70
+    },
+    modalContainer: {
+        marginTop: 40,
+        marginBottom: 25
     },
     listHeader: {
         color: "#fff",
@@ -89,7 +84,7 @@ const lists = StyleSheet.create({
     listText: {
         color: "#fff",
         textAlign: "center",
-        fontSize: 22,
+        fontSize: 18,
         fontFamily: "Coolvetica-Regular"
     },
     newListContainer: {

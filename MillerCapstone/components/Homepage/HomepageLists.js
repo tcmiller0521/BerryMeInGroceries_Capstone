@@ -1,37 +1,43 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TouchableHighlight } from 'react-native'
+import { useSelector } from "react-redux";
+import { selectGroceryList } from "../../state/listSlice";
+import ListModal from "../Lists/ListModal";
 
-const DATA = [
-    {
-        id: 1,
-        key: "item1",
-        title: "First Item"
-    },
-    {
-        id: 2,
-        title: "Second Item"
-    },
-    {
-        id: 3,
-        title: "Third Item"
-    },
-    {
-        id: 4,
-        title: "Fourth Item"
-    },
-    {
-        id: 5,
-        title: "Fifth Item"
-    },
-    {
-        id: 6,
-        title: "Sixth Item"
-    },
-]
+const DATA = []
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
 const HomepageLists = ({ navigation }) => {
+
+    const allLists = useSelector(selectGroceryList)
+
+    const ListEmptyComponent = () => {
+        return (
+            <>
+                <View style={homepageLists.noList}>
+                    <Text style={homepageLists.listText}>
+                        No Lists Here
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <View>
+            <TouchableOpacity
+                key={item._id}
+                onPress={() => navigation.navigate('GroceryList')}
+            >
+                <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
+                    <Text style={homepageLists.listText}>{item.listName}</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+        )
+    }
 
     return (
         <>
@@ -41,28 +47,16 @@ const HomepageLists = ({ navigation }) => {
                 </Text>
                 <View>
                     <FlatList
-                        data={DATA}
+                        data={allLists}
                         horizontal={true}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                                key={item.key}
-                                onPress={() => navigation.navigate('GroceryList')}
-                            >
-                                <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
-                                    <Text >{item.title}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.id}
+                        ListEmptyComponent={ListEmptyComponent}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item._id)}
                     />
                 </View>
             </View>
             <View style={homepageLists.newListContainer}>
-                <TouchableOpacity style={homepageLists.newListButton}>
-                    <Text style={homepageLists.listHeader}>
-                        + New List
-                    </Text>
-                </TouchableOpacity>
+               <ListModal />
             </View>
         </>
     )
@@ -85,7 +79,21 @@ const homepageLists = StyleSheet.create({
         marginLeft: 0,
         height: 115,
         width: 115,
-        borderRadius: 100 / 5
+        borderRadius: 100 / 5,
+        justifyContent: "center",
+        alignContent: "center"
+    },
+    listText: {
+        color: "#fff",
+        textAlign: "center",
+        fontSize: 18,
+        fontFamily: "Coolvetica-Regular",
+    },
+    noList: {
+        height: 125,
+        width: 300,
+        justifyContent: "center",
+        alignContent: "center"
     },
     newListContainer: {
         margin: 5,
