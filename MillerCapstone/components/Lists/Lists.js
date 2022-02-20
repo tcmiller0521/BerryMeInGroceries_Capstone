@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveLists } from "../../actions/lists";
 import { selectGroceryList } from "../../state/listSlice";
-import GroceryList from "./GroceryList";
 import ListModal from "./ListModal";
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]

@@ -1,79 +1,81 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-native";
+import { selectItemList } from "../../state/itemSlice";
 
-const DATA = [
-    {
-        id: 1,
-        key: "item1",
-        store: "First Store",
-        items: ["Item One ", "Item Two ", "Item Three ", "Item Four ", "Item Five ", "Item Six ", "Item Seven "],
-        prices: ["$$$ ", " ", "$$$ ", "$$$ ", "$$$ ", "$$$ ", "$$$ ",]
-    },
-    {
-        id: 2,
-        key: "item2",
-        store: "Second Store ",
-        item1: "Item One",
-        item2: "Item Two",
-        item3: "Item Three",
-        item4: "Item Four",
-        item5: "Item Five",
-        item6: "Item Six",
-    },
-]
+let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
 const GroceryList = () => {
 
-    let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
+    const allItems = useSelector(selectItemList);
+  
+    const {index} = useParams();
+    const items = Object.values(allItems[1]);
+    console.log(items);
+
+    // let priceTotal = 0;
+    // for (let i = 0; i < prices.length; i++) {
+    //     priceTotal += prices.price[i];
+    // }
+    // console.log(priceTotal);
+
+    const ListEmptyComponent = () => {
+        return (
+            <>
+                <View style={groceryList.noItem}>
+                    <Text style={groceryList.noItemText}>
+                        No Items Yet
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({item, index}) => {
+        return (
+            <>
+                <View style={groceryList.itemContainer}>
+                    <View style={groceryList.columnOne}>
+                        <Text style={groceryList.itemText}>
+                            {item.item}
+                        </Text>
+                    </View>
+                    <View style={groceryList.columnTwo}>
+                        <Text style={groceryList.itemText}>
+                           ${item.price}
+                        </Text>
+                    </View>
+                </View>
+            </>
+        )
+    }
 
     return (
         <>
             <View style={groceryList.listContainer}>
-                <View style={groceryList.container}>
+                {/* <View style={groceryList.container}>
                     <View style={groceryList.storeContainer}>
                         <Text style={groceryList.storeText}>
                             Store One
                         </Text>
                     </View>
-                </View>
-                <View style={groceryList.itemContainer}>
-                    <View style={groceryList.columnOne}>
-                        <Text style={groceryList.itemText}>
-                            Shopping Item One
-                        </Text>
-                    </View>
-                    <View style={groceryList.columnTwo}>
-                        <Text style={groceryList.itemText}>
-                            $1000.34
-                        </Text>
-                    </View>
-                </View>
-                <View style={groceryList.itemContainer}>
-                    <View style={groceryList.columnOne}>
-                        <Text style={groceryList.itemText}>
-                            Shopping Item One
-                        </Text>
-                    </View>
-                    <View style={groceryList.columnTwo}>
-                        <Text style={groceryList.itemText}>
-                            $1000.34
-                        </Text>
-                    </View>
+                </View> */}
+                <View>
+                    <FlatList
+                        data={allItems}
+                        ListEmptyComponent={ListEmptyComponent}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item._id)}
+                    />
                 </View>
                 <View style={groceryList.container}>
                     <View style={groceryList.storeContainer}>
                         <Text style={groceryList.storeText}>
-                            Store Total
+                           
                         </Text>
                     </View>
                 </View>
-            </View>
-            <View style={groceryList.newItemContainer}>
-            <TouchableOpacity style={groceryList.newItemButton}>
-                    <Text style={groceryList.itemButton}>
-                        + New List
-                    </Text>
-                </TouchableOpacity>
             </View>
         </>
     )
@@ -83,9 +85,20 @@ const groceryList = StyleSheet.create({
     listContainer: {
         height: 425,
     },
+    noItem: {
+        marginTop: 25,
+        justifyContent: "center",
+        alignContent: "center"
+    },
+    noItemText: {
+        color: "#fff",
+        fontSize: 18,
+        fontFamily: "Coolvetica-Regular",
+        textAlign: "center"
+    },
     container: {
         alignItems: "center",
-        marginTop: 25,
+        marginTop: 200,
     },
     itemContainer: {
         flexDirection: 'row',

@@ -15,6 +15,7 @@ import ItemPage from './components/GroceryLists/ItemPage';
 import CardPage from './components/MyStores/CardPage';
 import { useDispatch } from 'react-redux';
 import { retrieveLists } from './actions/lists';
+import { retrieveItems } from './actions/items';
 
 
 const Stack = createNativeStackNavigator()
@@ -27,6 +28,12 @@ const Main = () => {
     useEffect(() => {
         dispatch(retrieveLists())
     }, [currentListId, dispatch])
+
+    const [ currentItemId, setCurrentItemId ] = useState(0)
+
+    useEffect(() => {
+        dispatch(retrieveItems())
+    }, [currentItemId, dispatch])
 
   return (
       <NavigationContainer>
@@ -43,7 +50,7 @@ const Main = () => {
           <Stack.Screen name="Profile" component={UserProfile} />
           <Stack.Screen name="Stores" component={StoresPage} />
           <Stack.Screen name="Settings" component={UserSettings} />
-          <Stack.Screen name="GroceryList" component={ItemPage} />
+          <Stack.Screen name="GroceryList" component={ItemPage} setCurrentItemId={setCurrentItemId} currentItemId={currentItemId}/>
           <Stack.Screen name="Card" component={CardPage} />
         </Stack.Navigator>
       </NavigationContainer>
