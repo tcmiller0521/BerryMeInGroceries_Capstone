@@ -1,5 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+import { selectStoreList } from "../../state/storeSlice";
+import StoreModal from "./StoreModal";
 
 
 const DATA = [
@@ -23,7 +26,38 @@ const DATA = [
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const FavStores = ({ navigation }) => {
+const FavStores = ({ navigation, setCurrentStoreId, currentStoreId }) => {
+
+    const allStores = useSelector(selectStoreList);
+
+    const ListEmptyComponent = () => {
+        return (
+            <>
+                <View style={cards.noItem}>
+                    <Text style={cards.noItemText}>
+                        No Items Yet
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <>
+                <View style={favStores.itemContainer}>
+                    <TouchableOpacity
+                        key={item.key}
+                        onPress={() => navigation.navigate('Wallet')}
+                    >
+                        <View style={[{ backgroundColor: colors[index % colors.length] }, favStores.listItem]}>
+                            <Text style={favStores.listText}>{item.storeName}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </>
+        )
+    }
 
     return (
         <>
@@ -35,27 +69,15 @@ const FavStores = ({ navigation }) => {
             <View style={favStores.storesContainer}>
                 <View style={favStores.storesContainer}>
                     <FlatList
-                        data={DATA}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                                key={item.key}
-                                onPress={() => navigation.navigate('Wallet')}
-                            >
-                                <View style={[{ backgroundColor: colors[index % colors.length] }, favStores.listItem]}>
-                                    <Text style={favStores.listText}>{item.title}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.id}
+                        data={allStores}
+                        ListEmptyComponent={ListEmptyComponent}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item._id)}
                     />
                 </View>
             </View>
             <View style={favStores.newListContainer}>
-                <TouchableOpacity style={favStores.newListButton}>
-                    <Text style={favStores.listHeader}>
-                        + New List
-                    </Text>
-                </TouchableOpacity>
+                <StoreModal setCurrentStoreId={setCurrentStoreId} currentStoreId={currentStoreId} />
             </View>
         </>
     )

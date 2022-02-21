@@ -1,21 +1,21 @@
 import * as api from '../api/index'
-import { getItems, addItem } from '../state/itemSlice';
+import { getBudget, addBudget, deleteBudget, updateBudget } from '../state/budgetSlice';
 
-export const retrieveItems = () => async (dispatch) => {
+export const retrieveBudget = () => async (dispatch) => {
     try {
-        const { data } = await api.fetchItems();
-        dispatch(getItems(data))
+        const { data } = await api.fetchBudget();
+        dispatch(getBudget(data))
     } catch (error) {
         console.log(error)
     }
 };
 
-export const createItemList = (list) => async (dispatch) => {
+export const createBudget = (list) => async (dispatch) => {
     try {
-        const { data } = await api.newItem(list);
-        dispatch(addItem(data))     
+        const { data } = await api.createBudget(list);
+        dispatch(addBudget(data))     
         console.log(data)
     } catch (error) {
         console.log(error)
     }
-}
+};

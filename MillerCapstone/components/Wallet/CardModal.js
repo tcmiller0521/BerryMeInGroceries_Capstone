@@ -1,45 +1,42 @@
 import React, { useEffect, useState } from "react";
-import {
-    Alert,
-    Modal,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    Keyboard
+import { Alert, 
+        Modal, 
+        StyleSheet, 
+        Text, 
+        View, 
+        TouchableOpacity, 
+        TextInput, 
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { createItemList } from "../../actions/items";
-import { selectItemList } from "../../state/itemSlice";
+import { createCard } from "../../actions/card";
+import { selectCardList } from "../../state/cardSlice";
 
 
-
-const ItemModal = ({ setCurrentItemId, currentItemId }) => {
+const CardModal = ({ setCurrentCardId, currentCardId }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [itemData, setItemData] = useState({ item: "", price: "" });
-    const dispatch = useDispatch();
+    const [cardData, setCardData] = useState({ cardName: "", cardNumber: "" });
+    const dispatch = useDispatch();  
 
-    const allItems = useSelector(selectItemList);
-    const foundItem = (currentItemId ? allItems.find((item) => item._id === currentItemId) : null)
+    const allCards = useSelector(selectCardList);
+    const foundCard = (currentCardId ? allLists.find((card) => card._id === currentCardId) : null)
 
     useEffect(() => {
-        if (foundItem) setText(foundItem)
-    }, [foundItem])
+        if (foundCard) setText(foundCard)
+    }, [foundCard])
 
     const clear = () => {
-        setItemData({ item: "", price: "" });
+        setCardData({ cardName: "", cardNumber: "" });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createItemList(itemData))
+        dispatch(createCard(cardData))
         setModalVisible(!modalVisible)
         clear();
     }
-
+    
     return (
-        <View style={itemModal.centeredView}>
+        <View style={cardModal.centeredView}>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -49,56 +46,54 @@ const ItemModal = ({ setCurrentItemId, currentItemId }) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={itemModal.centeredView}>
-                    <View style={itemModal.modalView}>
-                        <Text style={itemModal.modalText}>Add Item</Text>
-                        <View style={itemModal.inputView}>
+                <View style={cardModal.centeredView}>
+                    <View style={cardModal.modalView}>
+                        <Text style={cardModal.modalText}>New Card</Text>
+                        <View style={cardModal.inputView}>
                             <TextInput
-                                placeholder="Item Name"
-                                name="listName"
-                                style={itemModal.input}
-                                value={itemData.item}
-                                onChangeText={(text) => setItemData({ ...itemData, item: text })}
+                                placeholder="Store Name"
+                                name="cardName"
+                                style={cardModal.input}
+                                value={cardData.cardName}
+                                onChangeText={(text) => setCardData({...cardData, cardName: text})}
                             />
                             <TextInput
-                                placeholder="Item Price"
-                                name="price"
-                                keyboardType="numeric"
-                                style={itemModal.input}
-                                value={itemData.price}
-                                onChangeText={(text) => setItemData({ ...itemData, price: text})}
+                                placeholder="Card Number"
+                                name="cardNumber"
+                                style={cardModal.input}
+                                value={cardData.cardNumber}
+                                onChangeText={(text) => setCardData({...cardData, cardNumber: text})}
                             />
-
                             <TouchableOpacity
-
-                                onPress={handleSubmit}
-                                style={[itemModal.button, itemModal.buttonClose]}
+                               
+                               onPress={handleSubmit}
+                                style={[cardModal.button, cardModal.buttonClose]}
                             >
-                                <Text style={itemModal.textStyle}>
-                                    Add to list
+                                <Text style={cardModal.textStyle}>
+                                    Add Card
                                 </Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
-                            style={[itemModal.button, itemModal.buttonClose]}
+                            style={[cardModal.button, cardModal.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
-                            <Text style={itemModal.textStyle}>Close</Text>
+                            <Text style={cardModal.textStyle}>Close</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
             <TouchableOpacity
-                style={[itemModal.button, itemModal.buttonOpen]}
+                style={[cardModal.button, cardModal.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={itemModal.textStyle}>+ Add Item</Text>
+                <Text style={cardModal.textStyle}>+ Add Card</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const itemModal = StyleSheet.create({
+const cardModal = StyleSheet.create({
     centeredView: {
         alignItems: "center",
     },
@@ -169,4 +164,4 @@ const itemModal = StyleSheet.create({
     },
 });
 
-export default ItemModal;
+export default CardModal;

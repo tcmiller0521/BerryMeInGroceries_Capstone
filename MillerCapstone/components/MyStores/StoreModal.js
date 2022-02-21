@@ -1,45 +1,42 @@
 import React, { useEffect, useState } from "react";
-import {
-    Alert,
-    Modal,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    Keyboard
+import { Alert, 
+        Modal, 
+        StyleSheet, 
+        Text, 
+        View, 
+        TouchableOpacity, 
+        TextInput, 
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { createItemList } from "../../actions/items";
-import { selectItemList } from "../../state/itemSlice";
+import { createStore } from "../../actions/store";
+import { selectStoreList } from "../../state/storeSlice";
 
 
-
-const ItemModal = ({ setCurrentItemId, currentItemId }) => {
+const StoreModal = ({ setCurrentStoreId, currentStoreId }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [itemData, setItemData] = useState({ item: "", price: "" });
-    const dispatch = useDispatch();
+    const [storeData, setStoreData] = useState({ storeName: "" });
+    const dispatch = useDispatch();  
 
-    const allItems = useSelector(selectItemList);
-    const foundItem = (currentItemId ? allItems.find((item) => item._id === currentItemId) : null)
+    const allStores = useSelector(selectStoreList);
+    const foundStore = (currentStoreId ? allStores.find((store) => store._id === currentStoreId) : null)
 
     useEffect(() => {
-        if (foundItem) setText(foundItem)
-    }, [foundItem])
+        if (foundStore) setText(foundStore)
+    }, [foundStore])
 
     const clear = () => {
-        setItemData({ item: "", price: "" });
+        setStoreData({ storeName: "" });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createItemList(itemData))
+        dispatch(createStore(storeData))
         setModalVisible(!modalVisible)
         clear();
     }
-
+    
     return (
-        <View style={itemModal.centeredView}>
+        <View style={storeModal.centeredView}>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -49,64 +46,55 @@ const ItemModal = ({ setCurrentItemId, currentItemId }) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={itemModal.centeredView}>
-                    <View style={itemModal.modalView}>
-                        <Text style={itemModal.modalText}>Add Item</Text>
-                        <View style={itemModal.inputView}>
+                <View style={storeModal.centeredView}>
+                    <View style={storeModal.modalView}>
+                        <Text style={storeModal.modalText}>Add Store</Text>
+                        <View style={storeModal.inputView}>
                             <TextInput
-                                placeholder="Item Name"
-                                name="listName"
-                                style={itemModal.input}
-                                value={itemData.item}
-                                onChangeText={(text) => setItemData({ ...itemData, item: text })}
+                                placeholder="Store Name"
+                                name="cardName"
+                                style={storeModal.input}
+                                value={storeData.storeName}
+                                onChangeText={(text) => setStoreData({...storeData, storeName: text})}
                             />
-                            <TextInput
-                                placeholder="Item Price"
-                                name="price"
-                                keyboardType="numeric"
-                                style={itemModal.input}
-                                value={itemData.price}
-                                onChangeText={(text) => setItemData({ ...itemData, price: text})}
-                            />
-
                             <TouchableOpacity
-
-                                onPress={handleSubmit}
-                                style={[itemModal.button, itemModal.buttonClose]}
+                               onPress={handleSubmit}
+                                style={[storeModal.button, storeModal.buttonClose]}
                             >
-                                <Text style={itemModal.textStyle}>
-                                    Add to list
+                                <Text style={storeModal.textStyle}>
+                                    Add Store
                                 </Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
-                            style={[itemModal.button, itemModal.buttonClose]}
+                            style={[storeModal.button, storeModal.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
-                            <Text style={itemModal.textStyle}>Close</Text>
+                            <Text style={storeModal.textStyle}>Close</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
             <TouchableOpacity
-                style={[itemModal.button, itemModal.buttonOpen]}
+                style={[storeModal.button, storeModal.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={itemModal.textStyle}>+ Add Item</Text>
+                <Text style={storeModal.textStyle}>+ Add Store</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const itemModal = StyleSheet.create({
+const storeModal = StyleSheet.create({
     centeredView: {
         alignItems: "center",
     },
     modalView: {
+        marginTop: 100,
         margin: 20,
         backgroundColor: "#1B1F22",
         width: 325,
-        height: 340,
+        height: 275,
         borderRadius: 100 / 2,
         alignItems: "center",
         elevation: 5
@@ -169,4 +157,4 @@ const itemModal = StyleSheet.create({
     },
 });
 
-export default ItemModal;
+export default StoreModal;

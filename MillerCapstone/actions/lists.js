@@ -1,5 +1,5 @@
 import * as api from '../api/index'
-import { addList, getLists } from '../state/listSlice';
+import { addList, deleteList, getLists } from '../state/listSlice';
 
 export const retrieveLists = () => async (dispatch) => {
     try {
@@ -19,3 +19,13 @@ export const createGroceryList = (list) => async (dispatch) => {
         console.log(error)
     }
 }
+
+export const removeList = (id) => async (dispatch) => {
+    try {
+        await api.deleteList(id);
+
+        dispatch(deleteList(id));
+    } catch (error) {
+        console.log(error);
+    }
+};

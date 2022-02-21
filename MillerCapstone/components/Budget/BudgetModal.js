@@ -1,45 +1,45 @@
 import React, { useEffect, useState } from "react";
-import {
-    Alert,
-    Modal,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    Keyboard
+import { Alert, 
+        Modal, 
+        StyleSheet, 
+        Text, 
+        View, 
+        TouchableOpacity, 
+        TextInput, 
+        Keyboard
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { createItemList } from "../../actions/items";
-import { selectItemList } from "../../state/itemSlice";
+import { createBudget } from "../../actions/budget";
+import { selectBudgetList } from "../../state/budgetSlice";
 
 
-
-const ItemModal = ({ setCurrentItemId, currentItemId }) => {
+const BudgetModal = ({ setCurrentBudgetId, currentBudgetId }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [itemData, setItemData] = useState({ item: "", price: "" });
-    const dispatch = useDispatch();
+    const [budgetData, setBudgetData] = useState({ budgetName: "", remaining: "", spent: "" });
+    const dispatch = useDispatch();  
 
-    const allItems = useSelector(selectItemList);
-    const foundItem = (currentItemId ? allItems.find((item) => item._id === currentItemId) : null)
+    const allBudgets = useSelector(selectBudgetList);
+    const foundBudget = (currentBudgetId ? budgetModal.find((budget) => budget._id === currentBudgetId) : null)
 
     useEffect(() => {
-        if (foundItem) setText(foundItem)
-    }, [foundItem])
+        if (foundBudget) setText(foundBudget)
+    }, [foundBudget])
 
     const clear = () => {
-        setItemData({ item: "", price: "" });
+        selectBudgetList({ budgetName: "", remaining: "", spent: "" });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createItemList(itemData))
+        dispatch(createBudget(budgetData))
         setModalVisible(!modalVisible)
         clear();
     }
 
+    console.log(budgetData)
+    
     return (
-        <View style={itemModal.centeredView}>
+        <View style={budgetModal.centeredView}>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -49,56 +49,56 @@ const ItemModal = ({ setCurrentItemId, currentItemId }) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={itemModal.centeredView}>
-                    <View style={itemModal.modalView}>
-                        <Text style={itemModal.modalText}>Add Item</Text>
-                        <View style={itemModal.inputView}>
-                            <TextInput
-                                placeholder="Item Name"
-                                name="listName"
-                                style={itemModal.input}
-                                value={itemData.item}
-                                onChangeText={(text) => setItemData({ ...itemData, item: text })}
+                <View style={budgetModal.centeredView}>
+                    <View style={budgetModal.modalView}>
+                        <Text style={budgetModal.modalText}>New Budget</Text>
+                        <View style={budgetModal.inputView}>
+                        <TextInput
+                                placeholder="Budget Name"
+                                name="budgetName"
+                                style={budgetModal.input}
+                                value={budgetData.budgetName}
+                                onChangeText={(text) => setBudgetData({...budgetData, budgetName: text})}
                             />
                             <TextInput
-                                placeholder="Item Price"
-                                name="price"
+                                placeholder="Budget Amount"
+                                name="remaining"
                                 keyboardType="numeric"
-                                style={itemModal.input}
-                                value={itemData.price}
-                                onChangeText={(text) => setItemData({ ...itemData, price: text})}
+                                style={budgetModal.input}
+                                value={budgetData.remaining}
+                                onChangeText={(text) => setBudgetData({...budgetData, remaining: text})}
                             />
-
+                            
                             <TouchableOpacity
-
-                                onPress={handleSubmit}
-                                style={[itemModal.button, itemModal.buttonClose]}
+                               
+                               onPress={handleSubmit}
+                                style={[budgetModal.button, budgetModal.buttonClose]}
                             >
-                                <Text style={itemModal.textStyle}>
-                                    Add to list
+                                <Text style={budgetModal.textStyle}>
+                                    Create Budget
                                 </Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
-                            style={[itemModal.button, itemModal.buttonClose]}
+                            style={[budgetModal.button, budgetModal.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
-                            <Text style={itemModal.textStyle}>Close</Text>
+                            <Text style={budgetModal.textStyle}>Close</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
             <TouchableOpacity
-                style={[itemModal.button, itemModal.buttonOpen]}
+                style={[budgetModal.button, budgetModal.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={itemModal.textStyle}>+ Add Item</Text>
+                <Text style={budgetModal.textStyle}>+ Add Budget</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const itemModal = StyleSheet.create({
+const budgetModal = StyleSheet.create({
     centeredView: {
         alignItems: "center",
     },
@@ -126,6 +126,7 @@ const itemModal = StyleSheet.create({
     button: {
         borderRadius: 100 / 2,
         justifyContent: "center",
+        marginBottom: 20
     },
     buttonOpen: {
         backgroundColor: "#363E44",
@@ -169,4 +170,4 @@ const itemModal = StyleSheet.create({
     },
 });
 
-export default ItemModal;
+export default BudgetModal;
