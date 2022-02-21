@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 import itemRoutes from './routes/item.js';
-import listRoutes from './routes/list.js'
+import listRoutes from './routes/list.js';
+import budgetRoutes from './routes/budget.js';
+import cardRoutes from './routes/card.js';
+import storeRoutes from './routes/store.js';
 
 const app = express();
 
@@ -16,6 +19,9 @@ app.use(cors());
 
 app.use('/items', itemRoutes);
 app.use('/list', listRoutes);
+app.use('/budget', budgetRoutes);
+app.use('/card', cardRoutes);
+app.use('/store', storeRoutes);
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })

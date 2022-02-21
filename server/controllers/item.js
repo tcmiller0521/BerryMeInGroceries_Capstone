@@ -24,11 +24,11 @@ export const addItem = async (req, res) => {
 
 export const updateItem = async (req, res) => {
     const { id } = req.params
-    const { itemName, price } = req.body;
+    const { item, price } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No item with id: ${id}`)
 
-    const updatedItem = { itemName, price, _id: id }
+    const updatedItem = { item, price, _id: id }
 
     await ItemModel.findByIdAndUpdate(id, updatedItem, { new: true });
 

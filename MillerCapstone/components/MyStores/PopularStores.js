@@ -4,32 +4,37 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TouchableHighlight 
 const DATA = [
     {
         id: 1,
-        key: "item1",
-        title: "First Item"
+        key: "storeOne",
+        title: "Target"
     },
     {
         id: 2,
-        title: "Second Item"
+        key: "storeTwo",
+        title: "Walmart"
     },
     {
         id: 3,
-        title: "Third Item"
+        key: "storeThree",
+        title: "King Soopers"
     },
     {
         id: 4,
-        title: "Fourth Item"
+        key: "storeFour",
+        title: "Sam's Club"
     },
     {
         id: 5,
-        title: "Fifth Item"
+        key: "storeFive",
+        title: "Costco"
     },
     {
         id: 6,
-        title: "Sixth Item"
+        key: "storeSix",
+        title: "Albertsons"
     },
 ]
 
-let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
+let colors = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1"]
 
 const PopularStores = ({ navigation }) => {
 
@@ -49,7 +54,7 @@ const PopularStores = ({ navigation }) => {
                                 onPress={() => navigation.navigate('Wallet')}
                             >
                                 <View style={[{ backgroundColor: colors[index % colors.length] }, popularStores.listItem]}>
-                                    <Text >{item.title}</Text>
+                                    <Text style={popularStores.itemText}>{item.title}</Text>
                                 </View>
                             </TouchableOpacity>
                         )}
@@ -78,7 +83,8 @@ const popularStores = StyleSheet.create({
         marginLeft: 0,
         height: 115,
         width: 115,
-        borderRadius: 100 / 5
+        borderRadius: 100 / 5,
+        justifyContent: "center"
     },
     newListContainer: {
         margin: 5,
@@ -93,6 +99,12 @@ const popularStores = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    itemText: {
+        color: "#fff",
+        textAlign: "center",
+        fontFamily: "Coolvetica-Regular",
+        fontSize: 20
+    }
 })
 
 export default PopularStores;

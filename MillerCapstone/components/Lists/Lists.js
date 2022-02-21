@@ -3,15 +3,21 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveLists } from "../../actions/lists";
 import { selectGroceryList } from "../../state/listSlice";
+import { removeList} from "../../actions/lists";
 import ListModal from "./ListModal";
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const Lists = ({ navigation, setCurrentListId, currentListId }) => {
+const Lists = ({ navigation, setCurrentListId, currentListId, item }) => {
 
     const allLists = useSelector(selectGroceryList);
+    const dispatch = useDispatch();
+    
+    
+    console.log(allLists)
 
-    const ListEmptyComponent = ({data}) => {
+    const ListEmptyComponent = () => {
         return (
             <>
                 <View>
@@ -23,19 +29,42 @@ const Lists = ({ navigation, setCurrentListId, currentListId }) => {
         )
     }
 
-    const renderItem = ({item, index}) => {
+    const RenderRight = (progress, dragX) => {
+        return (
+            <>
+            <TouchableOpacity onPress={() => dispatch(removeList((allLists) => String(allLists._id)))}>
+                <View style={lists.deleteContainer}>
+                    <Text style={lists.swipeText}>
+                        Delete
+                    </Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
+            <View style={lists.editContainer}>
+                <Text style={lists.swipeText}>
+                    Edit
+                </Text>
+            </View>
+        </TouchableOpacity>
+        </>
+        )
+    }
+
+    const renderItem = ({ item, index }) => {
 
         return (
-            <View>
-                <TouchableOpacity
-                    key={item._id}
-                    onPress={() => navigation.navigate('Wallet')}
-                >
-                    <View style={[{ backgroundColor: colors[index % colors.length] }, lists.listItem]}>
-                        <Text style={lists.listText}>{item.listName}</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+            <Swipeable renderRightActions={RenderRight}>
+                <View>
+                    <TouchableOpacity
+                        key={item.key}
+                        onPress={() => navigation.navigate('GroceryList')}
+                    >
+                        <View style={[{ backgroundColor: colors[index % colors.length] }, lists.listItem]}>
+                            <Text style={lists.listText}>{item.listName}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </Swipeable>
         )
     }
 
@@ -86,20 +115,30 @@ const lists = StyleSheet.create({
         fontSize: 18,
         fontFamily: "Coolvetica-Regular"
     },
-    newListContainer: {
-        marginTop: 30,
-        marginBottom: 30,
+    deleteContainer: {
+        height: 65,
+        width: 75,
+        backgroundColor: '#CE384E',
+        borderRadius: 100 / 2,
+        alignContent: "center",
         justifyContent: "center",
-        alignItems: "center",
+        marginTop: 10
     },
-    newListButton: {
-        backgroundColor: "#363E44",
-        width: 300,
-        height: 50,
-        borderRadius: 100 / 4,
-        alignItems: "center",
+    editContainer: {
+        height: 65,
+        width: 75,
+        backgroundColor: '#363E44',
+        borderRadius: 100 / 2,
+        alignContent: "center",
         justifyContent: "center",
+        marginTop: 10
     },
+    swipeText: {
+        color: "#fff",
+        fontSize: 16,
+        textAlign: 'center',
+        fontFamily: "Coolvetica-Regular"
+    }
 })
 
 export default Lists;

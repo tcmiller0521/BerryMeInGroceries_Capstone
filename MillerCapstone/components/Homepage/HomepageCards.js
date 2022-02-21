@@ -1,36 +1,42 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-
-const DATA = [
-    {
-        id: 1,
-        title: "First Item"
-    },
-    {
-        id: 2,
-        title: "Second Item"
-    },
-    {
-        id: 3,
-        title: "Third Item"
-    },
-    {
-        id: 4,
-        title: "Fourth Item"
-    },
-    {
-        id: 5,
-        title: "Fifth Item"
-    },
-    {
-        id: 6,
-        title: "Sixth Item"
-    },
-]
+import { useSelector } from "react-redux";
+import { selectCardList } from "../../state/cardSlice";
 
 let colors = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1",]
 
 const HomepageCards = ({ navigation }) => {
+
+    const allCards = useSelector(selectCardList)
+
+    const ListEmptyComponent = () => {
+        return (
+            <>
+                <View style={homepageCards.noItem}>
+                    <Text style={homepageCards.noItemText}>
+                        No Items Yet
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <>
+                <View style={homepageCards.itemContainer}>
+                    <TouchableOpacity
+                        key={item.key}
+                        onPress={() => navigation.navigate('Card')}
+                    >
+                        <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
+                            <Text >{item.cardName}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </>
+        )
+    }
 
     return (
         <>
@@ -40,18 +46,10 @@ const HomepageCards = ({ navigation }) => {
                 </Text>
                 <View>
                     <FlatList
-                        data={DATA}
+                        data={allCards}
                         horizontal={true}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                                key={item.key}
-                                onPress={() => navigation.navigate('Card')}
-                            >
-                                <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
-                                    <Text >{item.title}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
+                        ListEmptyComponent={ListEmptyComponent}
+                        renderItem={renderItem}
                         keyExtractor={item => item.id}
                     />
                 </View>

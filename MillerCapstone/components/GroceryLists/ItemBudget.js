@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 
 const ItemBudget = () => {
 
+    
+
     return (
         <View style={itemBudget.container}>
             <View style={itemBudget.budgetContainer}>

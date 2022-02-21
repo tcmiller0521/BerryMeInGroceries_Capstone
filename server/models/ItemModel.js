@@ -1,14 +1,17 @@
 import mongoose from 'mongoose'
 
 const ItemSchema = mongoose.Schema({
-    itemName: {
+    item: {
         type: String,
         required: true,
     },
     price: {
-        type: Number
+        type: Number,
     },
-    user: {
+    store: {
+        type: String,
+    },
+    username: {
         type: String,
     },
     listName: {

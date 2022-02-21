@@ -4,6 +4,7 @@ import { store } from './state/store/store';
 import { Provider } from 'react-redux';
 
 import Main from './Main';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator()
 
@@ -12,6 +13,7 @@ const App = () => {
     <Provider store={store}>
       <Main />
     </Provider>
+  
   )
 }
 

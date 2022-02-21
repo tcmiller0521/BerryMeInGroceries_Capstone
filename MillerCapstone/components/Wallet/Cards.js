@@ -1,65 +1,55 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-
-
-const DATA = [
-    {
-        id: 1,
-        title: "First Item"
-    },
-    {
-        id: 2,
-        title: "Second Item"
-    },
-    {
-        id: 3,
-        title: "Third Item"
-    },
-    {
-        id: 4,
-        title: "Fourth Item"
-    },
-    {
-        id: 5,
-        title: "Fifth Item"
-    },
-    {
-        id: 6,
-        title: "Sixth Item"
-    },
-    {
-        id: 7,
-        title: "Sixth Item"
-    },
-]
+import { useSelector } from "react-redux";
+import { selectCardList } from "../../state/cardSlice";
+import CardModal from "./CardModal";
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const Cards = ({ navigation }) => {
+const Cards = ({ navigation, currentCardId, setCurrentCardId }) => {
+
+    const allCards = useSelector(selectCardList)
+
+    const ListEmptyComponent = () => {
+        return (
+            <>
+                <View style={cards.noItem}>
+                    <Text style={cards.noItemText}>
+                        No Items Yet
+                    </Text>
+                </View>
+            </>
+        )
+    }
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <>
+                <View style={cards.itemContainer}>
+                    <TouchableOpacity
+                        key={item.key}
+                        onPress={() => navigation.navigate('Wallet')}
+                    >
+                        <View style={[{ backgroundColor: colors[index % colors.length] }, cards.listItem]}>
+                            <Text style={cards.listText}>{item.cardName}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </>
+        )
+    }
 
     return (
         <>
             <View style={cards.newListContainer}>
-                <TouchableOpacity style={cards.newListButton}>
-                    <Text style={cards.listHeader}>
-                        + New Card
-                    </Text>
-                </TouchableOpacity>
+                <CardModal setCurrentCardId={setCurrentCardId} currentListId={currentCardId} />
             </View>
             <View style={cards.container}>
                 <FlatList
-                    data={DATA}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity
-                            key={item.key}
-                            onPress={() => navigation.navigate('Wallet')}
-                        >
-                            <View style={[{ backgroundColor: colors[index % colors.length] }, cards.listItem]}>
-                                <Text style={cards.listText}>{item.title}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={item => item.id}
+                    data={allCards}
+                    ListEmptyComponent={ListEmptyComponent}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => String(item._id)}
                 />
             </View>
         </>

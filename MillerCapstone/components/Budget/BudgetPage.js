@@ -5,12 +5,12 @@ import BottomNav from "../Navigation/BottomNav";
 import Budget from "./Budget";
 import BudgetBanner from "./BudgetBanner";
 
-const BudgetPage = ({ navigation }) => {
+const BudgetPage = ({ navigation, setCurrentBudgetId, currentBudgetId }) => {
     return (
         <>
             <View style={budgetPage.container}>
                 <BudgetBanner />
-                <Budget />
+                <Budget setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId} />
                 <BottomNav navigation={navigation}/>
             </View>
         </>

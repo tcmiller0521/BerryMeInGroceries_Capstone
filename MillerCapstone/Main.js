@@ -16,26 +16,36 @@ import CardPage from './components/MyStores/CardPage';
 import { useDispatch } from 'react-redux';
 import { retrieveLists } from './actions/lists';
 import { retrieveItems } from './actions/items';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { retrieveBudget } from './actions/budget';
 
 
 const Stack = createNativeStackNavigator()
 
 const Main = () => {
 
-    const [ currentListId, setCurrentListId ] = useState(0)
-    const dispatch = useDispatch();
+  const [currentListId, setCurrentListId] = useState(0)
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(retrieveLists())
-    }, [currentListId, dispatch])
+  useEffect(() => {
+    dispatch(retrieveLists())
+  }, [currentListId, dispatch])
 
-    const [ currentItemId, setCurrentItemId ] = useState(0)
+  const [currentItemId, setCurrentItemId] = useState(0)
 
-    useEffect(() => {
-        dispatch(retrieveItems())
-    }, [currentItemId, dispatch])
+  useEffect(() => {
+    dispatch(retrieveItems())
+  }, [currentItemId, dispatch])
+
+  const [currentBudgetId, setCurrentBudgetId] = useState(0)
+
+  useEffect(() => {
+    dispatch(retrieveBudget())
+  }, [currentBudgetId, dispatch])
+  
 
   return (
+    <GestureHandlerRootView style={[{flex: 1}]}>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -44,16 +54,17 @@ const Main = () => {
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="Register" component={RegisterPage} />
           <Stack.Screen name="Homepage" component={Homepage} />
-          <Stack.Screen name="Budget" component={BudgetPage} />
-          <Stack.Screen name="Lists" component={ListPage} setCurrentListId={setCurrentListId} currentListId={currentListId}/>
+          <Stack.Screen name="Budget" component={BudgetPage} setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId}/>
+          <Stack.Screen name="Lists" component={ListPage} setCurrentListId={setCurrentListId} currentListId={currentListId} />
           <Stack.Screen name="Wallet" component={WalletPage} />
           <Stack.Screen name="Profile" component={UserProfile} />
           <Stack.Screen name="Stores" component={StoresPage} />
           <Stack.Screen name="Settings" component={UserSettings} />
-          <Stack.Screen name="GroceryList" component={ItemPage} setCurrentItemId={setCurrentItemId} currentItemId={currentItemId}/>
+          <Stack.Screen name="GroceryList" component={ItemPage} setCurrentItemId={setCurrentItemId} currentItemId={currentItemId} />
           <Stack.Screen name="Card" component={CardPage} />
         </Stack.Navigator>
       </NavigationContainer>
+    </GestureHandlerRootView>
   )
 }
 
