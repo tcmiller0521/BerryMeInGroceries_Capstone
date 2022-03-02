@@ -4,6 +4,7 @@ import itemSliceReducer from '../itemSlice';
 import budgetSliceReducer from '../budgetSlice';
 import cardSliceReducer from '../cardSlice';
 import storeSliceReducer from '../storeSlice';
+import userSliceReducer from '../userSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
        itemList: itemSliceReducer,
        budgetList: budgetSliceReducer,
        cardList: cardSliceReducer,
-       storeList: storeSliceReducer
+       storeList: storeSliceReducer,
+       user: userSliceReducer,
     },
 });

@@ -7,6 +7,7 @@ import listRoutes from './routes/list.js';
 import budgetRoutes from './routes/budget.js';
 import cardRoutes from './routes/card.js';
 import storeRoutes from './routes/store.js';
+import userRoutes from './routes/user.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/list', listRoutes);
 app.use('/budget', budgetRoutes);
 app.use('/card', cardRoutes);
 app.use('/store', storeRoutes);
+app.use('/user', userRoutes)
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })

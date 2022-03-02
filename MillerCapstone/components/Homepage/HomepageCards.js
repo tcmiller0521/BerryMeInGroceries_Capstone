@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { useSelector } from "react-redux";
 import { selectCardList } from "../../state/cardSlice";
+import CardModal from "../Wallet/CardModal";
 
 let colors = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1",]
 
@@ -14,7 +15,7 @@ const HomepageCards = ({ navigation }) => {
             <>
                 <View style={homepageCards.noItem}>
                     <Text style={homepageCards.noItemText}>
-                        No Items Yet
+                        No cards yet
                     </Text>
                 </View>
             </>
@@ -26,11 +27,11 @@ const HomepageCards = ({ navigation }) => {
             <>
                 <View style={homepageCards.itemContainer}>
                     <TouchableOpacity
-                        key={item.key}
+                        key={item._id}
                         onPress={() => navigation.navigate('Card')}
                     >
                         <View style={[{ backgroundColor: colors[index % colors.length] }, homepageCards.listItem]}>
-                            <Text >{item.cardName}</Text>
+                            <Text style={homepageCards.listText}>{item.cardName}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -50,16 +51,12 @@ const HomepageCards = ({ navigation }) => {
                         horizontal={true}
                         ListEmptyComponent={ListEmptyComponent}
                         renderItem={renderItem}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item) => String(item._id)}
                     />
                 </View>
             </View>
             <View style={homepageCards.newListContainer}>
-                <TouchableOpacity style={homepageCards.newListButton}>
-                    <Text style={homepageCards.listHeader}>
-                        + New Card
-                    </Text>
-                </TouchableOpacity>
+                <CardModal />
             </View>
         </>
     )
@@ -82,7 +79,14 @@ const homepageCards = StyleSheet.create({
         marginLeft: 0,
         height: 115,
         width: 115,
-        borderRadius: 100 / 5
+        borderRadius: 100 / 5,
+        justifyContent: "center"
+    },
+    listText: {
+        color: "#fff",
+        textAlign: "center",
+        fontSize: 18,
+        fontFamily: "Coolvetica-Regular",
     },
     newListContainer: {
         margin: 5,
@@ -97,6 +101,18 @@ const homepageCards = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    noItemText: {
+        color: "#fff",
+        fontFamily: "Coolvetica-Regular",
+        fontSize: 20,
+        textAlign: "center",
+        margin: 10
+    },
+    noItem: {
+        width: 300,
+        height: 115,
+        justifyContent: "center"
+    }
 })
 
 export default HomepageCards;

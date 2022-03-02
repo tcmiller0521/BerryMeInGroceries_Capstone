@@ -9,7 +9,7 @@ const RegisterPage = ({navigation}) => {
         <>
             <View style={register.container}>
                 <RegisterHeader />
-                <RegisterForm />
+                <RegisterForm navigation={navigation}/>
                 <ReturnUser navigation={navigation}/>
             </View>
         </>

@@ -8,17 +8,20 @@ import ItemBanner from "./ItemBanner";
 import ItemBudget from "./ItemBudget";
 import ItemModal from "./ItemModal";
 import { retrieveItems } from "../../actions/items";
-
+import { useRoute } from "@react-navigation/native";
 
 const ItemPage = ({ navigation, setCurrentItemId, currentItemId }) => {
+
+    const route = useRoute();
+    const index = route.params.index
 
     return (
         <>
             <View style={itemPage.container}>
-                <ItemBanner navigation={navigation}/>
+                <ItemBanner navigation={navigation} index={index} />
                 <ItemBudget />
-                <GroceryList />
-                <ItemModal currentItemId={currentItemId} setCurrentItemId={setCurrentItemId} />
+                <GroceryList index={index} />
+                <ItemModal currentItemId={currentItemId} setCurrentItemId={setCurrentItemId} index={index} />
                 <BottomNav navigation={navigation}/>
             </View>
         </>

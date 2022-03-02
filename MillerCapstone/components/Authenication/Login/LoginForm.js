@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { userSignIn } from "../../../actions/user";
 
-const LoginForm = () => {
-    const [text, onChangeText] = React.useState(null)
+const initialState = { email: '', password: ''};
+
+const LoginForm = ({ navigation }) => {
+    const [loginData, setLoginData] = useState(initialState)
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        dispatch(userSignIn(loginData, navigation.navigate('Homepage')))
+    }
+
 
     return (
         <>
@@ -14,15 +26,17 @@ const LoginForm = () => {
                     <TextInput
                         placeholder="Email"
                         style={loginForm.input}
-                        value={text}
+                        value={loginData.email}
+                        onChangeText={(text) => setLoginData({...loginData, email: text})}
                     />
                     <TextInput
                         placeholder="Password"
                         style={loginForm.input}
-                        value={text}
+                        value={loginData.password}
+                        onChangeText={(text) => setLoginData({...loginData, password: text})}
                     />
                     <TouchableOpacity
-                        onPress={() => Alert.alert('Button was pressed')}
+                        onPress={handleSubmit}
                         style={loginForm.loginButton}
                     >
                         <Text style={loginForm.buttonText}>

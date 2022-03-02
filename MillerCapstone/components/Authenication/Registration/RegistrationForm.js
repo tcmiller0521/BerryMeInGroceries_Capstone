@@ -1,8 +1,20 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { userSignUp } from "../../../actions/user";
 
-const RegisterForm = () => {
-    const [text, onChangeText] = React.useState(null)
+const initialState = { email: '', password: ''};
+
+const RegisterForm = ({navigation}) => {
+    const [userData, setUserData] = useState(initialState)
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        dispatch(userSignUp(userData, navigation.navigate('Homepage')))
+    }
 
     return (
         <>
@@ -14,15 +26,17 @@ const RegisterForm = () => {
                     <TextInput
                         placeholder="Email"
                         style={registerForm.input}
-                        value={text}
+                        value={userData.email}
+                        onChangeText={(text) => setUserData({...userData, email: text})}
                     />
                     <TextInput
                         placeholder="Password"
                         style={registerForm.input}
-                        value={text}
+                        value={userData.password}
+                        onChangeText={(text) => setUserData({...userData, password: text})}
                     />
                     <TouchableOpacity
-                        onPress={() => Alert.alert('Button was pressed')}
+                        onPress={handleSubmit}
                         style={registerForm.loginButton}
                     >
                         <Text style={registerForm.buttonText}>

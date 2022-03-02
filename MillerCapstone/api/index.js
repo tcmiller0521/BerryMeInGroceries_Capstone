@@ -1,8 +1,10 @@
 import axios from 'axios';
 const API = axios.create({ baseURL: 'http://10.0.2.2:5000' })
 
+
 export const fetchLists = () => API.get('/list/get');
 export const createList = (newList) => API.post('/list/add', newList);
+export const updateList = (id, updatedList) => API.patch(`/list/update/${id}`, updatedList);
 export const deleteList = (id) => API.delete(`/list/delete/${id}`);
 
 export const fetchItems = () => API.get('/items/get');
@@ -22,3 +24,9 @@ export const fetchStores = () => API.get('/store/get');
 export const newStore = (newStore) => API.post('/store/add', newStore);
 export const updateStore = (id, updatedStore) => API.patch(`/store/update/${id}`, updatedStore);
 export const deleteStore = (id) => API.delete(`/store/delete/${id}`);
+
+export const getUser = () => API.get('/user/get');
+export const userLogin = (userInfo) => API.post('/user/signin', userInfo);
+export const userRegister = (userInfo) => API.post('user/signup', userInfo);
+export const updateUser = (id, updatedUser) => API.patch(`/user/update/${id}`, updatedUser);
+export const updatePassword = (id, updatedPassword) => API.patch(`/user/update/password/${id}`, updatedPassword);

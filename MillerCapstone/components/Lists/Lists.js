@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveLists } from "../../actions/lists";
 import { selectGroceryList } from "../../state/listSlice";
-import { removeList} from "../../actions/lists";
+import { removeList } from "../../actions/lists";
 import ListModal from "./ListModal";
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import UpdateListModal from "./UpdateListModal";
+
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const Lists = ({ navigation, setCurrentListId, currentListId, item }) => {
+const Lists = ({ navigation, setCurrentListId, currentListId }) => {
 
     const allLists = useSelector(selectGroceryList);
     const dispatch = useDispatch();
-    
-    
-    console.log(allLists)
 
     const ListEmptyComponent = () => {
         return (
@@ -29,42 +28,42 @@ const Lists = ({ navigation, setCurrentListId, currentListId, item }) => {
         )
     }
 
-    const RenderRight = (progress, dragX) => {
-        return (
-            <>
-            <TouchableOpacity onPress={() => dispatch(removeList((allLists) => String(allLists._id)))}>
-                <View style={lists.deleteContainer}>
-                    <Text style={lists.swipeText}>
-                        Delete
-                    </Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
-            <View style={lists.editContainer}>
-                <Text style={lists.swipeText}>
-                    Edit
-                </Text>
-            </View>
-        </TouchableOpacity>
-        </>
-        )
-    }
-
-    const renderItem = ({ item, index }) => {
+    const RenderItem = ({ list, index }) => {
 
         return (
-            <Swipeable renderRightActions={RenderRight}>
+            <Swipeable renderRightActions={() => <RenderRight list={list} />}>
                 <View>
                     <TouchableOpacity
-                        key={item.key}
-                        onPress={() => navigation.navigate('GroceryList')}
+                        key={list._id}
+                        onPress={() => navigation.navigate('GroceryList', {index: index })}
                     >
                         <View style={[{ backgroundColor: colors[index % colors.length] }, lists.listItem]}>
-                            <Text style={lists.listText}>{item.listName}</Text>
+                            <Text style={lists.listText}>{list.listName}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
             </Swipeable>
+        )
+    }
+
+    const RenderRight = ({ list }) => {
+
+
+        const handleDelete = () => {
+            dispatch(removeList(list._id))
+        }
+
+        return (
+            <>
+                <TouchableOpacity onPress={handleDelete}>
+                    <View style={lists.deleteContainer}>
+                        <Text style={lists.swipeText}>
+                            Delete
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <UpdateListModal currentListId={list._id} />
+            </>
         )
     }
 
@@ -77,8 +76,8 @@ const Lists = ({ navigation, setCurrentListId, currentListId, item }) => {
                 <FlatList
                     data={allLists}
                     ListEmptyComponent={ListEmptyComponent}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => String(item._id)}
+                    renderItem={({ item, index }) => <RenderItem list={item} index={index} />}
+                    keyExtractor={(item, index) => String(item._id)}
                 />
             </View>
         </>

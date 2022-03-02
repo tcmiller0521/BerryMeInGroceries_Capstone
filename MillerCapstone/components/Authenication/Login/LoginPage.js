@@ -3,13 +3,16 @@ import LoginForm from "./LoginForm";
 import { View, Text, StyleSheet } from 'react-native'
 import LoginHeader from "./LoginHeader";
 import NewUser from "./NewUser";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginPage = ({ navigation }) => {
+
+    
     return (
         <>
             <View style={login.container}>
                 <LoginHeader />
-                <LoginForm />
+                <LoginForm navigation={navigation} />
                 <NewUser navigation={navigation} />
             </View>
         </>

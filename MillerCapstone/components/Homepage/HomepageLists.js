@@ -27,7 +27,7 @@ const HomepageLists = ({ navigation }) => {
             <View>
             <TouchableOpacity
                 key={item._id}
-                onPress={() => navigation.navigate('GroceryList')}
+                onPress={() => navigation.navigate('GroceryList', {index: index})}
             >
                 <View style={[{ backgroundColor: colors[index % colors.length] }, homepageLists.listItem]}>
                     <Text style={homepageLists.listText}>{item.listName}</Text>

@@ -12,12 +12,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createItemList } from "../../actions/items";
 import { selectItemList } from "../../state/itemSlice";
+import { selectGroceryList } from "../../state/listSlice";
 
 
 
-const ItemModal = ({ setCurrentItemId, currentItemId }) => {
+const ItemModal = ({ setCurrentItemId, currentItemId, index }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [itemData, setItemData] = useState({ item: "", price: "" });
+    const listInfo = useSelector(selectGroceryList);
+    const [itemData, setItemData] = useState({ item: "", price: "", listName: listInfo[index].listName });
     const dispatch = useDispatch();
 
     const allItems = useSelector(selectItemList);

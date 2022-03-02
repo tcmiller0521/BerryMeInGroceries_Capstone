@@ -18,30 +18,28 @@ import { retrieveLists } from './actions/lists';
 import { retrieveItems } from './actions/items';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { retrieveBudget } from './actions/budget';
+import { retrieveCards } from './actions/card';
 
 
 const Stack = createNativeStackNavigator()
 
-const Main = () => {
-
+const Main = ({ index }) => {
+  
   const [currentListId, setCurrentListId] = useState(0)
+  const [currentCardId, setCurrentCardId] = useState(0)
+  const [currentItemId, setCurrentItemId] = useState(0)
+  const [currentBudgetId, setCurrentBudgetId] = useState(0)
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(retrieveLists())
-  }, [currentListId, dispatch])
-
-  const [currentItemId, setCurrentItemId] = useState(0)
-
-  useEffect(() => {
+    dispatch(retrieveCards())
     dispatch(retrieveItems())
-  }, [currentItemId, dispatch])
-
-  const [currentBudgetId, setCurrentBudgetId] = useState(0)
-
-  useEffect(() => {
     dispatch(retrieveBudget())
-  }, [currentBudgetId, dispatch])
+  }, [currentListId, dispatch], 
+  [currentCardId, dispatch],
+  [currentItemId, dispatch],
+  [currentBudgetId, dispatch])
   
 
   return (
@@ -56,11 +54,11 @@ const Main = () => {
           <Stack.Screen name="Homepage" component={Homepage} />
           <Stack.Screen name="Budget" component={BudgetPage} setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId}/>
           <Stack.Screen name="Lists" component={ListPage} setCurrentListId={setCurrentListId} currentListId={currentListId} />
-          <Stack.Screen name="Wallet" component={WalletPage} />
+          <Stack.Screen name="Wallet" component={WalletPage} setCurrentCardId={setCurrentCardId} currentCardId={currentCardId} />
           <Stack.Screen name="Profile" component={UserProfile} />
           <Stack.Screen name="Stores" component={StoresPage} />
           <Stack.Screen name="Settings" component={UserSettings} />
-          <Stack.Screen name="GroceryList" component={ItemPage} setCurrentItemId={setCurrentItemId} currentItemId={currentItemId} />
+          <Stack.Screen name='GroceryList' component={ItemPage} setCurrentItemId={setCurrentItemId} currentItemId={currentItemId} />
           <Stack.Screen name="Card" component={CardPage} />
         </Stack.Navigator>
       </NavigationContainer>

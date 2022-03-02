@@ -1,14 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from "react-redux";
+import { selectGroceryList } from "../../state/listSlice";
 
 
-const ItemBanner = ({ navigation }) => {
+const ItemBanner = ({ navigation, index }) => {
+
+    const listInfo = useSelector(selectGroceryList);
+    console.log(listInfo[index])
+    console.log(index)
 
     return (
         <>
             <View style={itemBanner.container}>
                     <Text style={itemBanner.headerText}>
-                        List Name
+                        {listInfo[index].listName}
                     </Text>
             </View>
         </>

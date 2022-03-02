@@ -7,14 +7,7 @@ import BottomNav from "../Navigation/BottomNav";
 import Cards from "./Cards";
 import WalletBanner from "./WalletBanner";
 
-const WalletPage = ({ navigation }) => {
-
-    const [currentCardId, setCurrentCardId] = useState(0)
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(retrieveCards())
-    }, [currentCardId, dispatch])
+const WalletPage = ({ navigation, setCurrentCardId, currentCardId }) => {
 
     return (
         <>
