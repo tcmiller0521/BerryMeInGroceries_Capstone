@@ -10,7 +10,6 @@ const storeSlice = createSlice({
             state.storeList = action.payload;
             console.log(action.payload)
         },
-
         addStore: (state, action) => {
             state.storeList.push(action.payload);
             console.log(action.payload);

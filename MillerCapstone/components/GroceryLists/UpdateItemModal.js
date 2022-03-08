@@ -11,13 +11,11 @@ import {
     FlatList
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { createItemList } from "../../actions/items";
+import { editItem } from "../../actions/items";
 import { selectGroceryList } from "../../state/listSlice";
 import { Picker } from '@react-native-picker/picker'
-import { selectItemList } from "../../state/itemSlice";
-import { editBudget } from "../../actions/budget";
 
-const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
+const UpdateItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
     const dispatch = useDispatch();
     const pickerRef = useRef();
 
@@ -34,34 +32,13 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
     }
 
     const clear = () => {
-        setItemData({ item: "", price: "", listName: listInfo[index].listName });
+        setItemData({ item: "", price: "" });
     }
-
-    // const allItems = useSelector(selectItemList);
-
-    // let sum = 0
-
-    // allItems.forEach(function (i) {
-    //     if (i.listName === listInfo[index].listName) {
-    //         sum += i.price;
-    //     }
-    // })
-
-    // const [budgetInfo, setBudgetInfo] = useState({spent: sum})
-
-    // const updateBudget = () => {
-    //     if (listInfo[index].budgetName) {
-    //         console.log(budgetInfo)
-    //         dispatch(editBudget(budgetInfo))
-    //     } else {
-    //         console.log("error")
-    //     }
-    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createItemList(itemData));
-        setModalVisible(!modalVisible);
+        dispatch(editItem(currentItemId, itemData))
+        setModalVisible(!modalVisible)
         clear();
     }
 
@@ -79,7 +56,7 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
             >
                 <View style={itemModal.centeredView}>
                     <View style={itemModal.modalView}>
-                        <Text style={itemModal.modalText}>Add Item</Text>
+                        <Text style={itemModal.modalText}>Edit Item</Text>
                         <View style={itemModal.inputView}>
                             <TextInput
                                 placeholder="Item Name"
@@ -114,7 +91,7 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
                                 style={[itemModal.button, itemModal.buttonClose]}
                             >
                                 <Text style={itemModal.textStyle}>
-                                    Add to list
+                                    Update
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -131,7 +108,7 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
                 style={[itemModal.button, itemModal.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={itemModal.textStyle}>+ Add Item</Text>
+                <Text style={itemModal.swipeText}>Edit</Text>
             </TouchableOpacity>
         </View>
     );
@@ -168,9 +145,12 @@ const itemModal = StyleSheet.create({
         justifyContent: "center",
     },
     buttonOpen: {
-        backgroundColor: "#363E44",
-        width: 300,
-        height: 50,
+        height: 30,
+        width: 75,
+        backgroundColor: '#363E44',
+        borderRadius: 100 / 2,
+        alignContent: "center",
+        justifyContent: "center",
     },
     buttonClose: {
         backgroundColor: "#363E44",
@@ -207,6 +187,12 @@ const itemModal = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 100 / 5,
     },
+    swipeText: {
+        color: "#fff",
+        fontSize: 16,
+        textAlign: 'center',
+        fontFamily: "Coolvetica-Regular"
+    }
 });
 
-export default ItemModal;
+export default UpdateItemModal;

@@ -5,7 +5,7 @@ export const retrieveLists = () => async (dispatch) => {
     try {
         const { data } = await api.fetchLists();
         dispatch(getLists(data))
-        console.log(data)
+      
     } catch (error) {
         console.log(error)
     }
@@ -15,7 +15,7 @@ export const createGroceryList = (list) => async (dispatch) => {
     try {
         const { data } = await api.createList(list);
         dispatch(addList(data))     
-        console.log(data)
+    
     } catch (error) {
         console.log(error)
     }

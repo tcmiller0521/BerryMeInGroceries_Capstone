@@ -3,6 +3,7 @@ import express from 'express'
 const router = express.Router();
 
 import { addItem, deleteItem, getItems, updateItem } from '../controllers/item.js';
+import auth from '../middleware/auth.js'
 
 router.get('/get', getItems);
 router.post('/add', addItem);

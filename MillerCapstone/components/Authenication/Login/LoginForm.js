@@ -12,7 +12,7 @@ const LoginForm = ({ navigation }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(userSignIn(loginData, navigation.navigate('Homepage')))
+        dispatch(userSignIn(loginData, navigation))
     }
 
 

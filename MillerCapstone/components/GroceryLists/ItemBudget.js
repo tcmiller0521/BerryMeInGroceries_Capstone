@@ -1,31 +1,66 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { selectGroceryList } from "../../state/listSlice";
+import { useSelector } from "react-redux";
+import { selectBudgetList } from "../../state/budgetSlice";
 
-const ItemBudget = () => {
+const ItemBudget = ({ index }) => {
 
-    
+    const listInfo = useSelector(selectGroceryList);
+    const budgetInfo = useSelector(selectBudgetList)
+
+    // const budget = budgetInfo.map(budget => {
+    //     if (listInfo[index].budgetName === budget.budgetName) {
+    //         console.log(budget)
+    //     } else {
+    //         console.log('Nope')
+    //     }
+    // })
+
+
+
+
 
     return (
-        <View style={itemBudget.container}>
-            <View style={itemBudget.budgetContainer}>
-                <View style={[itemBudget.budgetBox, itemBudget.budgetOne]}>
-                    <Text style={itemBudget.budgetText}>
-                        Spent
-                    </Text>
-                    <Text style={itemBudget.amountText}>
-                        $$$
-                    </Text>
-                </View>
-                <View style={[itemBudget.budgetBox, itemBudget.budgetTwo]}>
-                    <Text style={itemBudget.budgetText}>
-                        Remaining
-                    </Text>
-                    <Text style={itemBudget.amountText}>
-                        $$$
-                    </Text>
-                </View>
-            </View>
-        </View>
+        <>
+            {budgetInfo.map((budget, i) => {
+                if (listInfo[index].budgetName === budget.budgetName) {
+                    return (
+                        <View key={i} style={itemBudget.container}>
+                            <View style={itemBudget.budgetContainer}>
+                                <View style={[itemBudget.budgetBox, itemBudget.budgetOne]}>
+                                    <Text style={itemBudget.budgetText}>
+                                        Spent
+                                    </Text>
+                                    {budget.spent === null ?
+                                        <Text style={itemBudget.amountText}>
+                                            $0
+                                        </Text> :
+                                        <Text style={itemBudget.amountText}>
+                                            ${budget.spent}
+                                        </Text>
+                                    }
+                                </View>
+                                <View style={[itemBudget.budgetBox, itemBudget.budgetTwo]}>
+                                    <Text style={itemBudget.budgetText}>
+                                        Remaining
+                                    </Text>
+                                    <Text style={itemBudget.amountText}>
+                                        ${budget.remaining - budget.spent}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    )
+                } else {
+                    <View style={itemBudget.container}>
+                        <Text>
+                            Hello
+                        </Text>
+                    </View>
+                }
+            })}
+        </>
     )
 }
 

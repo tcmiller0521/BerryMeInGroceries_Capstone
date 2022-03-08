@@ -22,25 +22,25 @@ export const addBudget = async (req, res) => {
     }
 }
 
-// export const updateItem = async (req, res) => {
-//     const { id } = req.params
-//     const { item, price } = req.body;
+export const updateBudget = async (req, res) => {
+    const { id } = req.params
+    const { budgetName, spent, remaining } = req.body;
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No item with id: ${id}`)
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No item with id: ${id}`)
 
-//     const updatedItem = { item, price, _id: id }
+    const updatedBudget = { budgetName, spent, remaining, _id: id }
 
-//     await ItemModel.findByIdAndUpdate(id, updatedItem, { new: true });
+    await BudgetModel.findByIdAndUpdate(id, updatedBudget, { new: true });
 
-//     res.json(updatedItem);
-// };
+    res.json(updatedBudget);
+};
 
-// export const deleteItem = async (req, res) => {
-//     const { id } = req.params
+export const deleteBudget = async (req, res) => {
+    const { id } = req.params
     
-//     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id ${id}`);
 
-//     await ItemModel.findByIdAndRemove(id);
+    await BudgetModel.findByIdAndRemove(id);
 
-//     res.json({ message: "Item deleted successfully."})
-// }
+    res.json({ message: "Item deleted successfully."})
+}

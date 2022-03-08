@@ -1,5 +1,6 @@
 import express from 'express'
 import { deleteList, createList, updateList, getLists } from '../controllers/list.js';
+import auth from '../middleware/auth.js'
 
 const router = express.Router();
 

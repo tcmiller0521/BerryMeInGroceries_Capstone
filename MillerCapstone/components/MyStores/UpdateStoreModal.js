@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, 
         Modal, 
         StyleSheet, 
@@ -6,34 +6,32 @@ import { Alert,
         View, 
         TouchableOpacity, 
         TextInput, 
-        Keyboard
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { editList } from "../../actions/lists";
+import { createStore, editStore } from "../../actions/store";
+import { selectStoreList } from "../../state/storeSlice";
 
 
-
-const UpdateListModal = ({ setCurrentListId, currentListId }) => {
-
+const UpdateStoreModal = ({ setCurrentStoreId, currentStoreId }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [listData, setListData] = useState({ listName: "" });
+    const [storeData, setStoreData] = useState({ storeName: "" });
     const dispatch = useDispatch();  
 
     const clear = () => {
-        setListData({ listName: "" });
+        setStoreData({ storeName: "" });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(editList(currentListId, listData))
+        dispatch(editStore(currentStoreId, storeData))
         setModalVisible(!modalVisible)
         clear();
     }
     
     return (
-        <View style={styles.centeredView}>
+        <View style={storeModal.centeredView}>
             <Modal
-                animationType="fade"
+                animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -41,48 +39,48 @@ const UpdateListModal = ({ setCurrentListId, currentListId }) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Edit list</Text>
-                        <View style={styles.inputView}>
+                <View style={storeModal.centeredView}>
+                    <View style={storeModal.modalView}>
+                        <Text style={storeModal.modalText}>Edit Store</Text>
+                        <View style={storeModal.inputView}>
                             <TextInput
-                                placeholder="List Name"
-                                name="listName"
-                                style={styles.input}
-                                value={listData.listName}
-                                onChangeText={(text) => setListData({...listData, listName: text})}
+                                placeholder="Store Name"
+                                name="cardName"
+                                style={storeModal.input}
+                                value={storeData.storeName}
+                                onChangeText={(text) => setStoreData({...storeData, storeName: text})}
                             />
                             <TouchableOpacity
                                onPress={handleSubmit}
-                                style={[styles.button, styles.buttonClose]}
+                                style={[storeModal.button, storeModal.buttonClose]}
                             >
-                                <Text style={styles.textStyle}>
-                                    Create List
+                                <Text style={storeModal.textStyle}>
+                                    Update
                                 </Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
+                            style={[storeModal.button, storeModal.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
-                            <Text style={styles.textStyle}>Close</Text>
+                            <Text style={storeModal.textStyle}>Close</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
             <TouchableOpacity
-                style={[styles.button, styles.buttonOpen]}
+                style={[storeModal.button, storeModal.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={styles.swipeText}>Edit</Text>
+                <Text style={storeModal.swipeText}>Edit</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
+const storeModal = StyleSheet.create({
     centeredView: {
-        alignItems: "center"
+        alignItems: "center",
     },
     modalView: {
         marginTop: 100,
@@ -93,6 +91,10 @@ const styles = StyleSheet.create({
         borderRadius: 100 / 2,
         alignItems: "center",
         elevation: 5
+    },
+    dropDownMenu: {
+        width: 275,
+        marginBottom: 20,
     },
     dropDownContainerStyle: {
         backgroundColor: "#fff",
@@ -107,13 +109,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     buttonOpen: {
-            height: 65,
-            width: 75,
-            backgroundColor: '#363E44',
-            borderRadius: 100 / 2,
-            alignContent: "center",
-            justifyContent: "center",
-            marginTop: 10
+        height: 65,
+        width: 75,
+        backgroundColor: '#363E44',
+        borderRadius: 100 / 2,
+        alignContent: "center",
+        justifyContent: "center",
+        marginTop: 10,
+        marginRight: 10
     },
     buttonClose: {
         backgroundColor: "#363E44",
@@ -158,4 +161,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default UpdateListModal;
+export default UpdateStoreModal;
