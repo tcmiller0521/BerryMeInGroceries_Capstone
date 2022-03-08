@@ -4,7 +4,8 @@ import itemSliceReducer from '../itemSlice';
 import budgetSliceReducer from '../budgetSlice';
 import cardSliceReducer from '../cardSlice';
 import storeSliceReducer from '../storeSlice';
-import userSliceReducer from '../userSlice';
+import authSliceReducer from '../authSlice';
+import usersSliceReducer from '../usersSlice';
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
        budgetList: budgetSliceReducer,
        cardList: cardSliceReducer,
        storeList: storeSliceReducer,
-       user: userSliceReducer,
+       auth: authSliceReducer,
+       users: usersSliceReducer,
     },
 });

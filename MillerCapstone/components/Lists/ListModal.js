@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, 
         Modal, 
         StyleSheet, 
@@ -11,22 +11,27 @@ import { Alert,
 import { useDispatch, useSelector } from "react-redux";
 import { createGroceryList } from "../../actions/lists";
 import { selectGroceryList } from "../../state/listSlice";
-
+import { Picker } from '@react-native-picker/picker'
+import {selectBudgetList} from '../../state/budgetSlice';
 
 const ListModal = ({ setCurrentListId, currentListId }) => {
+    const dispatch = useDispatch();
+    const pickerRef = useRef();
+
     const [modalVisible, setModalVisible] = useState(false);
-    const [listData, setListData] = useState({ listName: "" });
-    const dispatch = useDispatch();  
+    const [listData, setListData] = useState({ listName: "", budgetName: "" });  
+    const allBudgets = useSelector(selectBudgetList);
 
-    const allLists = useSelector(selectGroceryList);
-    const foundList = (currentListId ? allLists.find((list) => list._id === currentListId) : null)
+    function open() {
+        pickerRef.current.focus();
+    }
 
-    useEffect(() => {
-        if (foundList) setText(foundList)
-    }, [foundList])
+    function close() {
+        pickerRef.current.blur();
+    }
 
     const clear = () => {
-        setListData({ listName: "" });
+        setListData({ listName: "", budgetName: "" });
     }
 
     const handleSubmit = (e) => {
@@ -58,7 +63,18 @@ const ListModal = ({ setCurrentListId, currentListId }) => {
                                 value={listData.listName}
                                 onChangeText={(text) => setListData({...listData, listName: text})}
                             />
-                            
+                            <Picker 
+                            ref={pickerRef}
+                            selectedValue={listData.budgetName}
+                            style={styles.dropDownMenu}
+                            onValueChange={(value, itemIndex) => 
+                            setListData({...listData, budgetName: value })}
+                            >
+                                <Picker.Item label="Select a budget" value={null} />
+                                {allBudgets.map((budget, i) => (
+                                    <Picker.Item key={i} label={budget.budgetName} value={budget.budgetName} />
+                                ))}
+                            </Picker>
                             <TouchableOpacity
                                
                                onPress={handleSubmit}
@@ -104,6 +120,7 @@ const styles = StyleSheet.create({
     dropDownMenu: {
         width: 275,
         marginBottom: 20,
+        backgroundColor: "#fff",
     },
     dropDownContainerStyle: {
         backgroundColor: "#fff",

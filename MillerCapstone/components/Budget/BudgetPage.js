@@ -10,7 +10,7 @@ const BudgetPage = ({ navigation, setCurrentBudgetId, currentBudgetId }) => {
         <>
             <View style={budgetPage.container}>
                 <BudgetBanner />
-                <Budget setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId} />
+                <Budget setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId} navigation={navigation}/>
                 <BottomNav navigation={navigation}/>
             </View>
         </>

@@ -1,5 +1,6 @@
 import express from 'express'
 import { addCard, getCards, updateCard, deleteCard } from '../controllers/card.js';
+import auth from '../middleware/auth.js'
 
 const router = express.Router();
 

@@ -19,3 +19,23 @@ export const createBudget = (list) => async (dispatch) => {
         console.log(error)
     }
 };
+
+export const editBudget = (id, budget) => async (dispatch) => {
+    try {
+        const { data } = await api.updateBudget(id, budget);
+
+        dispatch(updateBudget(data));
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const removeBudget = (id) => async (dispatch) => {
+    try {
+        await api.deleteBudget(id);
+
+        dispatch(deleteBudget(id));
+    } catch (error) {
+        console.log(error);
+    }
+};

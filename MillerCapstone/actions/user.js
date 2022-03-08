@@ -1,5 +1,5 @@
 import * as api from '../api/index.js';
-import { loginUser, updateUser, updatePassword, getUser } from '../state/userSlice';
+import { loginUser, updateUser, updatePassword, getUser } from '../state/authSlice';
 
 export const retrieveUser = () => async (dispatch) => {
     try {
@@ -10,13 +10,13 @@ export const retrieveUser = () => async (dispatch) => {
     }
 }
 
-export const userSignIn = ( userInfo, router ) => async (dispatch) => {
+export const userSignIn = ( userInfo, navigation ) => async (dispatch) => {
     try {
         const { data } = await api.userLogin(userInfo);
 
         dispatch(loginUser(data));
 
-        router.push('/');
+        navigation.navigate('Homepage');
     } catch (error) {
         console.log(error);
     }

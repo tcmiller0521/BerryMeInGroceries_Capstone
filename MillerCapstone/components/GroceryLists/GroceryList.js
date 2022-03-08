@@ -5,15 +5,24 @@ import { useParams } from "react-router-native";
 import { selectItemList } from "../../state/itemSlice";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { selectGroceryList } from "../../state/listSlice";
+import { removeItem } from '../../actions/items'
+import UpdateItemModal from "./UpdateItemModal";
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
-const GroceryList = ({ index }) => {
+const GroceryList = ({ index, allStores }) => {
 
     const listInfo = useSelector(selectGroceryList);
     const allItems = useSelector(selectItemList);
     const dispatch = useDispatch();
-   
+
+    let sum = 0
+
+    allItems.forEach(function (i) {
+        if (i.listName === listInfo[index].listName) {
+            sum += i.price;
+        }
+    })
 
     const ListEmptyComponent = () => {
         return (
@@ -27,46 +36,47 @@ const GroceryList = ({ index }) => {
         )
     }
 
-    const RenderRight = (progress, dragX) => {
+    const RenderItem = ({ item }) => {
         return (
             <>
-                <TouchableOpacity onPress={() => dispatch(removeList((allItems) => String(allItems._id)))}>
+                {listInfo[index].listName === item.listName ? //place items into separate lists
+                    <Swipeable renderRightActions={() => <RenderRight item={item} />}>
+                        <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
+                            <View style={[groceryList.columnOne, groceryList.itemColumnOne]}>
+                                <Text style={groceryList.itemText}>
+                                    {item.item}
+                                </Text>
+                            </View>
+                            <View style={groceryList.columnTwo}>
+                                <Text style={groceryList.itemText}>
+                                    ${item.price}
+                                </Text>
+                            </View>
+                        </View>
+                    </Swipeable> : null
+                }
+            </>
+        )
+    }
+
+    const RenderRight = ({ item }) => {
+
+        const handleDelete = () => {
+            dispatch(removeItem(item._id))
+        }
+
+        return (
+            <>
+                <TouchableOpacity onPress={handleDelete}>
                     <View style={groceryList.deleteContainer}>
                         <Text style={groceryList.swipeText}>
                             Delete
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
-                    <View style={groceryList.editContainer}>
-                        <Text style={groceryList.swipeText}>
-                            Edit
-                        </Text>
-                    </View>
+                <TouchableOpacity onPress={() => dispatch(removeItem((item) => String(item._id)))}>
+                    <UpdateItemModal currentItemId={item._id} index={index} allStores={allStores} />
                 </TouchableOpacity>
-            </>
-        )
-    }
-
-    const renderItem = ({ item }) => {
-        return (
-            <>
-            {listInfo[index].listName === item.listName ?
-                <Swipeable renderRightActions={RenderRight}>
-                    <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
-                        <View style={groceryList.columnOne}>
-                            <Text style={groceryList.itemText}>
-                                {item.item}
-                            </Text> 
-                        </View>
-                        <View style={groceryList.columnTwo}>
-                            <Text style={groceryList.itemText}>
-                                ${item.price}
-                            </Text>
-                        </View>
-                    </View>
-                </Swipeable> : null
-            }
             </>
         )
     }
@@ -85,15 +95,22 @@ const GroceryList = ({ index }) => {
                     <FlatList
                         data={allItems}
                         ListEmptyComponent={ListEmptyComponent}
-                        renderItem={renderItem}
+                        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
                         keyExtractor={(item) => String(item._id)}
                     />
                 </View>
                 <View style={groceryList.container}>
                     <View style={groceryList.storeContainer}>
-                        <Text style={groceryList.storeText}>
-
-                        </Text>
+                        <View style={[groceryList.columnOne, groceryList.totalColumnOne]}>
+                            <Text style={groceryList.itemText}>
+                                Total
+                            </Text>
+                        </View>
+                        <View style={groceryList.columnTwo}>
+                            <Text style={groceryList.itemText}>
+                                ${sum}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -118,7 +135,6 @@ const groceryList = StyleSheet.create({
     },
     container: {
         alignItems: "center",
-        marginTop: 200,
     },
     itemContainer: {
         flexDirection: 'row',
@@ -136,8 +152,14 @@ const groceryList = StyleSheet.create({
     },
     columnOne: {
         width: "48%",
+    },
+    itemColumnOne: {
         marginLeft: 62,
         marginRight: 10,
+    },
+    totalColumnOne: {
+        marginLeft: 20,
+        marginRight: 40,
     },
     itemText: {
         color: "#fff",
@@ -147,8 +169,12 @@ const groceryList = StyleSheet.create({
         marginBottom: 5,
     },
     storeContainer: {
-        width: 300,
-        height: 30,
+        marginTop: 20,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        width: 330,
+        height: 35,
         borderRadius: 100 / 2,
         backgroundColor: "#F4A261",
         justifyContent: "center",

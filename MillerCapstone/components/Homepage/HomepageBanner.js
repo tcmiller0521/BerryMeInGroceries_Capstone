@@ -1,8 +1,15 @@
-import React from "react";
+import React, { Profiler, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
+import { selectUserList } from "../../state/usersSlice";
+
 
 
 const HomepageBanner = ({ navigation }) => {
+
+    const userData = useSelector(selectUserList)
+    console.log(userData)
 
     return (
         <>
@@ -16,7 +23,7 @@ const HomepageBanner = ({ navigation }) => {
                 </TouchableOpacity>
                 <View style={homepageBanner.textContainer}>
                     <Text style={homepageBanner.headerText}>
-                        Welcome Back, Taylor
+                        Welcome Back,
                     </Text>
                 </View>
             </View>

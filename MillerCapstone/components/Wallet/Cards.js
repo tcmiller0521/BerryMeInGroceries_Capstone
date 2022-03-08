@@ -1,14 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCardList } from "../../state/cardSlice";
 import CardModal from "./CardModal";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { removeCard } from "../../actions/card";
+import UpdateCardModal from "./UpdateCardModal";
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
 const Cards = ({ navigation, currentCardId, setCurrentCardId }) => {
 
+    const dispatch = useDispatch();
     const allCards = useSelector(selectCardList)
 
     const ListEmptyComponent = () => {
@@ -23,32 +26,31 @@ const Cards = ({ navigation, currentCardId, setCurrentCardId }) => {
         )
     }
 
-    const RenderRight = (progress, dragX) => {
+    const RenderRight = ({item}) => {
+
+        const handleDelete = () => {
+            dispatch(removeCard(item._id))
+        }
+
         return (
             <>
-                <TouchableOpacity onPress={() => dispatch(removeList((allItems) => String(allItems._id)))}>
+                <TouchableOpacity onPress={handleDelete}>
                     <View style={cards.deleteContainer}>
                         <Text style={cards.swipeText}>
                             Delete
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
-                    <View style={cards.editContainer}>
-                        <Text style={cards.swipeText}>
-                            Edit
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                <UpdateCardModal currentCardId={item._id}/>
             </>
         )
     }
 
-    const renderItem = ({ item, index }) => {
+    const RenderItem = ({ item, index }) => {
         return (
             <>
-                <Swipeable renderRightActions={RenderRight}>
-                    <View style={cards.itemContainer}>
+                <Swipeable renderRightActions={() => <RenderRight item={item}/> }>
+                    <View>
                         <TouchableOpacity
                             key={item._id}
                             onPress={() => navigation.navigate('Wallet')}
@@ -72,7 +74,7 @@ const Cards = ({ navigation, currentCardId, setCurrentCardId }) => {
                 <FlatList
                     data={allCards}
                     ListEmptyComponent={ListEmptyComponent}
-                    renderItem={renderItem}
+                    renderItem={({item, index}) => <RenderItem item={item} index={index} />}
                     keyExtractor={(item) => String(item._id)}
                 />
             </View>

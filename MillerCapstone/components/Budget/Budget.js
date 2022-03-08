@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectBudgetList } from "../../state/budgetSlice";
 import BudgetModal from "./BudgetModal";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { removeBudget } from "../../actions/budget";
+import UpdateBudgetModal from "./UpdateBudgetModal";
 
 
 let colorOne = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 let colorTwo = ["#5DD39E", "#4F7CAC", "#7B6A9B", "#A75889", "#F185B3", "#FFC4D1"]
 
-const Budget = ({ currentBudgetId, setCurrentBudgetId }) => {
+const Budget = ({ currentBudgetId, setCurrentBudgetId, navigation }) => {
 
     const allBudgets = useSelector(selectBudgetList);
     const dispatch = useDispatch();
@@ -28,30 +31,10 @@ const Budget = ({ currentBudgetId, setCurrentBudgetId }) => {
         )
     }
 
-    const RenderRight = (progress, dragX) => {
-        return (
-            <>
-                <TouchableOpacity onPress={() => dispatch(removeList((allBudgets) => String(allBudgets._id)))}>
-                    <View style={budget.deleteContainer}>
-                        <Text style={budget.swipeText}>
-                            Delete
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
-                    <View style={budget.editContainer}>
-                        <Text style={budget.swipeText}>
-                            Edit
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </>
-        )
-    }
-
-    const renderItem = ({ item, index }) => (
+    const RenderItem = ({ item, index }) => (
         <>
-            <Swipeable renderRightActions={RenderRight}>
+            <Swipeable renderRightActions={() => <RenderRight item={item} />}>
+
                 <View>
                     <View style={budget.headerContainer}>
                         <Text style={budget.headerText}>
@@ -62,15 +45,26 @@ const Budget = ({ currentBudgetId, setCurrentBudgetId }) => {
                         <View style={budget.columnOne}>
                             <View style={[{ backgroundColor: colorOne[index % colorOne.length] }, budget.budgetBox]}>
                                 <Text style={budget.budgetText}>
-                                    {item.remaining}
+                                    Remaining
+                                </Text>
+                                <Text style={budget.budgetText}>
+                                    ${item.remaining - item.spent}
                                 </Text>
                             </View>
                         </View>
                         <View style={budget.columnTwo}>
                             <View style={[{ backgroundColor: colorTwo[index % colorTwo.length] }, budget.budgetBox]}>
                                 <Text style={budget.budgetText}>
-                                    {item.spent}
+                                    Spent
                                 </Text>
+                                {item.spent === null ?
+                                    <Text style={budget.budgetText}>
+                                        $0
+                                    </Text> :
+                                    <Text style={budget.budgetText}>
+                                        ${item.spent}
+                                    </Text>
+                                }
                             </View>
                         </View>
                     </View>
@@ -79,23 +73,38 @@ const Budget = ({ currentBudgetId, setCurrentBudgetId }) => {
         </>
     );
 
+    const RenderRight = ({item}) => {
+
+        const handleDelete = () => {
+            dispatch(removeBudget(item._id))
+        }
+
+        return (
+            <>
+                <TouchableOpacity onPress={handleDelete}>
+                    <View style={budget.deleteContainer}>
+                        <Text style={budget.swipeText}>
+                            Delete
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <UpdateBudgetModal currentBudgetId={item._id}/>
+            </>
+        )
+    }
+
     return (
         <>
             <View style={budget.container}>
                 <FlatList
                     data={allBudgets}
                     ListEmptyComponent={ListEmptyComponent}
-                    renderItem={renderItem}
+                    renderItem={({item, index}) => <RenderItem item={item} index={index} />}
                     keyExtractor={(item) => String(item._id)}
                 />
             </View>
             <View style={budget.newListContainer}>
                 <BudgetModal setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId} />
-                <TouchableOpacity style={budget.newListButton}>
-                    <Text style={budget.headerText}>
-                        Edit Budget
-                    </Text>
-                </TouchableOpacity>
             </View>
         </>
     )

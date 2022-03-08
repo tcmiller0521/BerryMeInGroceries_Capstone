@@ -4,6 +4,9 @@ const ItemSchema = mongoose.Schema({
     listName: {
         type: String,
         required: true,
+    },
+    budgetName: {
+        type: String,
     }
 })
 

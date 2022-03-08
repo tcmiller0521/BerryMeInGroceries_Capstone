@@ -1,5 +1,6 @@
 import express from 'express'
 import { addStore, getStore, deleteStore, updateStore } from '../controllers/store.js';
+import auth from '../middleware/auth.js'
 
 const router = express.Router();
 

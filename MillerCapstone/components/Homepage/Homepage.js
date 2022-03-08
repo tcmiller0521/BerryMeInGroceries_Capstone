@@ -26,8 +26,8 @@ const Homepage = ({navigation}) => {
 
 const homepage = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "#2D3339"
+        backgroundColor: "#2D3339",
+        flex: 1
     }
 
 })

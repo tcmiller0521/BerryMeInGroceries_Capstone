@@ -1,35 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectStoreList } from "../../state/storeSlice";
+import { removeStore } from "../../actions/store";
 import StoreModal from "./StoreModal";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import UpdateStoreModal from "./UpdateStoreModal";
 
-
-const DATA = [
-    {
-        id: 1,
-        title: "First Item"
-    },
-    {
-        id: 2,
-        title: "Second Item"
-    },
-    {
-        id: 3,
-        title: "Third Item"
-    },
-    {
-        id: 4,
-        title: "Third Item"
-    }
-]
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
 const FavStores = ({ navigation, setCurrentStoreId, currentStoreId }) => {
 
+    const dispatch = useDispatch();
     const allStores = useSelector(selectStoreList);
+    console.log(allStores)
 
     const ListEmptyComponent = () => {
         return (
@@ -43,32 +28,31 @@ const FavStores = ({ navigation, setCurrentStoreId, currentStoreId }) => {
         )
     }
 
-    const RenderRight = (progress, dragX) => {
+    const RenderRight = ({item}) => {
+
+        const handleDelete = () => {
+            dispatch(removeStore(item._id))
+        }
+
         return (
             <>
-                <TouchableOpacity onPress={() => dispatch(removeList((allItems) => String(allItems._id)))}>
+                <TouchableOpacity onPress={handleDelete}>
                     <View style={favStores.deleteContainer}>
                         <Text style={favStores.swipeText}>
                             Delete
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => dispatch(removeList((item) => String(item._id)))}>
-                    <View style={favStores.editContainer}>
-                        <Text style={favStores.swipeText}>
-                            Edit
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                <UpdateStoreModal currentStoreId={item._id} />
             </>
         )
     }
 
-    const renderItem = ({ item, index }) => {
+    const RenderItem = ({ item, index }) => {
         return (
             <>
-                <Swipeable renderRightActions={RenderRight}>
-                    <View style={favStores.itemContainer}>
+                <Swipeable renderRightActions={() => <RenderRight item={item}/>}>
+                    <View>
                         <TouchableOpacity
                             key={item.key}
                             onPress={() => navigation.navigate('Wallet')}
@@ -95,7 +79,7 @@ const FavStores = ({ navigation, setCurrentStoreId, currentStoreId }) => {
                     <FlatList
                         data={allStores}
                         ListEmptyComponent={ListEmptyComponent}
-                        renderItem={renderItem}
+                        renderItem={({item, index}) => <RenderItem item={item} index={index}/>}
                         keyExtractor={(item) => String(item._id)}
                     />
                 </View>

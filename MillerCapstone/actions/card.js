@@ -20,7 +20,7 @@ export const createCard = (card) => async (dispatch) => {
     }
 }
 
-export const editItem = (id, card) => async (dispatch) => {
+export const editCard = (id, card) => async (dispatch) => {
     try {
         const { data } = await api.updateCard(id, card);
 

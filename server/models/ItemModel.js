@@ -8,7 +8,7 @@ const ItemSchema = mongoose.Schema({
     price: {
         type: Number,
     },
-    store: {
+    storeName: {
         type: String,
     },
     username: {

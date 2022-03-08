@@ -19,6 +19,7 @@ import { retrieveItems } from './actions/items';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { retrieveBudget } from './actions/budget';
 import { retrieveCards } from './actions/card';
+import { retrieveStores } from './actions/store';
 
 
 const Stack = createNativeStackNavigator()
@@ -29,6 +30,8 @@ const Main = ({ index }) => {
   const [currentCardId, setCurrentCardId] = useState(0)
   const [currentItemId, setCurrentItemId] = useState(0)
   const [currentBudgetId, setCurrentBudgetId] = useState(0)
+  const [currentStoreId, setCurrentStoreId] = useState(0)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,10 +39,13 @@ const Main = ({ index }) => {
     dispatch(retrieveCards())
     dispatch(retrieveItems())
     dispatch(retrieveBudget())
+    dispatch(retrieveStores())
   }, [currentListId, dispatch], 
   [currentCardId, dispatch],
   [currentItemId, dispatch],
-  [currentBudgetId, dispatch])
+  [currentBudgetId, dispatch],
+  [currentStoreId, dispatch]
+  )
   
 
   return (

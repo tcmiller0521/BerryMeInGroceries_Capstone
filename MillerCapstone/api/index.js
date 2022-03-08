@@ -9,11 +9,13 @@ export const deleteList = (id) => API.delete(`/list/delete/${id}`);
 
 export const fetchItems = () => API.get('/items/get');
 export const newItem = (newItem) => API.post('/items/add', newItem);
-export const updateItem = (id, updatedItem) => API.patch(`/item/update/${id}`, updatedItem);
-export const deleteItem = (id) => API.delete(`/item/delete/${id}`);
+export const updateItem = (id, updatedItem) => API.patch(`/items/update/${id}`, updatedItem);
+export const deleteItem = (id) => API.delete(`/items/delete/${id}`);
 
 export const fetchBudget = () => API.get('/budget/get');
 export const createBudget = (newBudget) => API.post('/budget/add', newBudget);
+export const updateBudget = (id, updatedBudget) => API.patch(`/budget/update/${id}`, updatedBudget);
+export const deleteBudget = (id) => API.delete(`/budget/delete/${id}`);
 
 export const fetchCards = () => API.get('/card/get');
 export const newCard = (newCard) => API.post('/card/add', newCard);

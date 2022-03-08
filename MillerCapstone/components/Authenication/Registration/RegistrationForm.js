@@ -35,12 +35,18 @@ const RegisterForm = ({navigation}) => {
                         value={userData.password}
                         onChangeText={(text) => setUserData({...userData, password: text})}
                     />
+                    <TextInput
+                        placeholder="Password"
+                        style={registerForm.input}
+                        value={userData.confirmPassword}
+                        onChangeText={(text) => setUserData({...userData, confirmPassword: text})}
+                    />
                     <TouchableOpacity
                         onPress={handleSubmit}
                         style={registerForm.loginButton}
                     >
                         <Text style={registerForm.buttonText}>
-                            Login
+                           Register
                         </Text>
                     </TouchableOpacity>
                 </View>
