@@ -8,8 +8,8 @@ import { selectUserList } from "../../state/usersSlice";
 
 const HomepageBanner = ({ navigation }) => {
 
-    const userData = useSelector(selectUserList)
-    console.log(userData)
+    // const userData = useSelector(selectUserList)
+    // console.log(userData)
 
     return (
         <>

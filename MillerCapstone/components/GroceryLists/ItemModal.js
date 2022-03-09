@@ -16,6 +16,7 @@ import { selectGroceryList } from "../../state/listSlice";
 import { Picker } from '@react-native-picker/picker'
 import { selectItemList } from "../../state/itemSlice";
 import { editBudget } from "../../actions/budget";
+import { selectBudgetList } from "../../state/budgetSlice";
 
 const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
     const dispatch = useDispatch();
@@ -37,30 +38,38 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
         setItemData({ item: "", price: "", listName: listInfo[index].listName });
     }
 
-    // const allItems = useSelector(selectItemList);
+    const allItems = useSelector(selectItemList);
 
-    // let sum = 0
+    let sum = 0
 
-    // allItems.forEach(function (i) {
-    //     if (i.listName === listInfo[index].listName) {
-    //         sum += i.price;
-    //     }
-    // })
+    allItems.forEach(function (i) {
+        if (i.listName === listInfo[index].listName) {
+            sum += i.price;
+        }
+    })
 
-    // const [budgetInfo, setBudgetInfo] = useState({spent: sum})
+    const [budgetInfo, setBudgetInfo] = useState()
+    const budgetData = useSelector(selectBudgetList)
 
-    // const updateBudget = () => {
-    //     if (listInfo[index].budgetName) {
-    //         console.log(budgetInfo)
-    //         dispatch(editBudget(budgetInfo))
-    //     } else {
-    //         console.log("error")
-    //     }
-    // }
+    const budget = budgetData.find(budget => budget.budgetName === listInfo[index].budgetName)
+    console.log(budget.remaining)
+
+    const handleChange = () => {
+        setBudgetInfo({
+            ...budgetInfo,
+            [budget.spent]: sum
+        })
+    }
+
+    const updateBudget = () => {
+            dispatch(editBudget(budgetInfo))
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createItemList(itemData));
+        handleChange();
+        updateBudget();
         setModalVisible(!modalVisible);
         clear();
     }
