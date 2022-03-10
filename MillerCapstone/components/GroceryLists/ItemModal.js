@@ -62,7 +62,8 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
     }
 
     const updateBudget = () => {
-            dispatch(editBudget(budgetInfo))
+        console.log(budgetInfo)
+            // dispatch(editBudget(budgetInfo))
     }
 
     const handleSubmit = (e) => {

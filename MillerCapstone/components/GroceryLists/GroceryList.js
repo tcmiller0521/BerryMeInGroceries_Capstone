@@ -24,6 +24,14 @@ const GroceryList = ({ index, allStores }) => {
         }
     })
 
+    let groupByStore = allItems.reduce((r, a) => {
+        console.log("a", a);
+        console.log("r", r);
+        r[a.storeName] = [...r[a.storeName] || [], a];
+        return r;
+    }, {});
+
+
     const ListEmptyComponent = () => {
         return (
             <>
@@ -40,20 +48,15 @@ const GroceryList = ({ index, allStores }) => {
         return (
             <>
                 {listInfo[index].listName === item.listName ? //place items into separate lists
-                    <Swipeable renderRightActions={() => <RenderRight item={item} />}>
-                        <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
-                            <View style={[groceryList.columnOne, groceryList.itemColumnOne]}>
-                                <Text style={groceryList.itemText}>
-                                    {item.item}
-                                </Text>
-                            </View>
-                            <View style={groceryList.columnTwo}>
-                                <Text style={groceryList.itemText}>
-                                    ${item.price}
-                                </Text>
-                            </View>
-                        </View>
-                    </Swipeable> : null
+                            <>
+                                <View>
+                                    <Text>
+                                        {item.item}
+                                    </Text>
+                                </View>
+                            </>
+                    :
+                    null
                 }
             </>
         )
@@ -93,7 +96,15 @@ const GroceryList = ({ index, allStores }) => {
                 </View> */}
                 <View>
                     <FlatList
-                        data={allItems}
+                        data={groupByStore.Target}
+                        ListEmptyComponent={ListEmptyComponent}
+                        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
+                        keyExtractor={(item) => String(item._id)}
+                    />
+                </View>
+                <View>
+                    <FlatList
+                        data={groupByStore.walmart}
                         ListEmptyComponent={ListEmptyComponent}
                         renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
                         keyExtractor={(item) => String(item._id)}
