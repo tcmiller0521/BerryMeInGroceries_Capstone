@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-native";
 import { selectItemList } from "../../state/itemSlice";
@@ -16,6 +16,8 @@ const GroceryList = ({ index, allStores }) => {
     const allItems = useSelector(selectItemList);
     const dispatch = useDispatch();
 
+    console.log("stores", allStores)
+
     let sum = 0
 
     allItems.forEach(function (i) {
@@ -24,18 +26,6 @@ const GroceryList = ({ index, allStores }) => {
         }
     })
 
-    let groupByStore = allItems.reduce((r, a) => {
-        r[a.storeName] = [...r[a.storeName] || [], a];
-        return r;
-    }, {});
-
-    const [storeList, setStoreList] = useState(groupByStore)
-    
-    
-    console.log("store", storeList[0])
-
-
-    console.log("items", allItems)
 
 
     const ListEmptyComponent = () => {
@@ -56,23 +46,23 @@ const GroceryList = ({ index, allStores }) => {
 
         return (
             <>
-                {/* {listInfo[index].listName === item.listName ? //place items into separate lists */}
+                {listInfo[index].listName === item.listName ?
                     <>
                         <View>
-                        <FlatList
-                            data={item}
-                            // ListEmptyComponent={ListEmptyComponent}
-                            renderItem={({ item }) => <StoreRenderItem store={item} />}
-                            keyExtractor={(item) => String(item._id)}
-                        />
-                        <Text>
-                            test
-                        </Text>
+                            <FlatList
+                                data={item}
+                                // ListEmptyComponent={ListEmptyComponent}
+                                renderItem={({ item }) => <StoreRenderItem store={item} />}
+                                keyExtractor={(item) => String(item._id)}
+                            />
+                            <Text>
+                                test
+                            </Text>
                         </View>
                     </>
-                    {/* :
+                    :
                     null
-                } */}
+                }
             </>
         )
     }
@@ -84,13 +74,13 @@ const GroceryList = ({ index, allStores }) => {
         return (
             <>
 
-                    <>
-                        <View>
+                <>
+                    <View>
                         <Text>
                             hello
                         </Text>
-                        </View>
-                    </>
+                    </View>
+                </>
             </>
         )
     }
@@ -127,14 +117,27 @@ const GroceryList = ({ index, allStores }) => {
                         </Text>
                     </View>
                 </View> */}
+                <ScrollView>
+                {allStores.map((store, i) => (
+                    <>
                     <View>
-                        <FlatList
-                            data={allItems}
-                            // ListEmptyComponent={ListEmptyComponent}
-                            renderItem={StoreRenderItem}
-                            // keyExtractor={(item) => String(item._id)}
-                        />
+                        <Text>
+                            {store.storeName}
+                        </Text>
                     </View>
+                    {allItems.map((item, i) => (
+                        store.storeName === item.storeName ? 
+                        <>
+                        <View>
+                            <Text>
+                                {item.item}
+                            </Text>
+                        </View>
+                        </> : null
+                    ))}
+                    </>
+                ))}
+                </ScrollView>
 
                 <View style={groceryList.container}>
                     <View style={groceryList.storeContainer}>
@@ -158,6 +161,9 @@ const GroceryList = ({ index, allStores }) => {
 const groceryList = StyleSheet.create({
     listContainer: {
         height: 425,
+    },
+    flatListContainer: {
+        height: 350
     },
     noItem: {
         marginTop: 25,
@@ -265,3 +271,10 @@ const groceryList = StyleSheet.create({
 })
 
 export default GroceryList;
+
+{/* <FlatList
+                            data={allItems}
+                            // ListEmptyComponent={ListEmptyComponent}
+                            renderItem={StoreRenderItem}
+                            // keyExtractor={(item) => String(item._id)}
+                        /> */}
