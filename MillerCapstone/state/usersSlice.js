@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export const usersSlice = createSlice ({
     name: "users",
     initialState: {
-        users: AsyncStorage.getItem('profile')
+        users: ""
     },
     reducers: {
         addUsers: (state, action) => {

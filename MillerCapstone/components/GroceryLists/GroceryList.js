@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-native";
@@ -25,11 +25,17 @@ const GroceryList = ({ index, allStores }) => {
     })
 
     let groupByStore = allItems.reduce((r, a) => {
-        console.log("a", a);
-        console.log("r", r);
         r[a.storeName] = [...r[a.storeName] || [], a];
         return r;
     }, {});
+
+    const [storeList, setStoreList] = useState(groupByStore)
+    
+    
+    console.log("store", storeList[0])
+
+
+    console.log("items", allItems)
 
 
     const ListEmptyComponent = () => {
@@ -45,19 +51,46 @@ const GroceryList = ({ index, allStores }) => {
     }
 
     const RenderItem = ({ item }) => {
+
+        console.log("item", item)
+
         return (
             <>
-                {listInfo[index].listName === item.listName ? //place items into separate lists
-                            <>
-                                <View>
-                                    <Text>
-                                        {item.item}
-                                    </Text>
-                                </View>
-                            </>
-                    :
+                {/* {listInfo[index].listName === item.listName ? //place items into separate lists */}
+                    <>
+                        <View>
+                        <FlatList
+                            data={item}
+                            // ListEmptyComponent={ListEmptyComponent}
+                            renderItem={({ item }) => <StoreRenderItem store={item} />}
+                            keyExtractor={(item) => String(item._id)}
+                        />
+                        <Text>
+                            test
+                        </Text>
+                        </View>
+                    </>
+                    {/* :
                     null
-                }
+                } */}
+            </>
+        )
+    }
+
+    const StoreRenderItem = ({ item }) => {
+
+        console.log("test")
+
+        return (
+            <>
+
+                    <>
+                        <View>
+                        <Text>
+                            hello
+                        </Text>
+                        </View>
+                    </>
             </>
         )
     }
@@ -94,22 +127,15 @@ const GroceryList = ({ index, allStores }) => {
                         </Text>
                     </View>
                 </View> */}
-                <View>
-                    <FlatList
-                        data={groupByStore.Target}
-                        ListEmptyComponent={ListEmptyComponent}
-                        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
-                        keyExtractor={(item) => String(item._id)}
-                    />
-                </View>
-                <View>
-                    <FlatList
-                        data={groupByStore.walmart}
-                        ListEmptyComponent={ListEmptyComponent}
-                        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
-                        keyExtractor={(item) => String(item._id)}
-                    />
-                </View>
+                    <View>
+                        <FlatList
+                            data={allItems}
+                            // ListEmptyComponent={ListEmptyComponent}
+                            renderItem={StoreRenderItem}
+                            // keyExtractor={(item) => String(item._id)}
+                        />
+                    </View>
+
                 <View style={groceryList.container}>
                     <View style={groceryList.storeContainer}>
                         <View style={[groceryList.columnOne, groceryList.totalColumnOne]}>

@@ -15,7 +15,7 @@ import { selectBudgetList } from "../../state/budgetSlice";
 
 const BudgetModal = ({ setCurrentBudgetId, currentBudgetId }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [budgetData, setBudgetData] = useState({ budgetName: "", remaining: "", spent: "" });
+    const [budgetData, setBudgetData] = useState({ budgetName: "", remaining: "", spent: 0 });
     const dispatch = useDispatch();  
 
     const allBudgets = useSelector(selectBudgetList);
@@ -27,7 +27,7 @@ const BudgetModal = ({ setCurrentBudgetId, currentBudgetId }) => {
     }, [foundBudget])
 
     const clear = () => {
-        setBudgetData({ budgetName: "", remaining: "", spent: "" });
+        setBudgetData({ budgetName: "", remaining: "", spent: 0 });
     }
 
     const handleSubmit = (e) => {
