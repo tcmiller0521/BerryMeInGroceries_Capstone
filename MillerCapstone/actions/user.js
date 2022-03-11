@@ -22,13 +22,13 @@ export const userSignIn = ( userInfo, navigation ) => async (dispatch) => {
     }
 };
 
-export const userSignUp = ( userInfo, router ) => async (dispatch) => {
+export const userSignUp = ( userInfo, navigation ) => async (dispatch) => {
     try{
         const { data } = await api.userRegister(userInfo);
 
         dispatch(loginUser(data));
 
-        
+        navigation.navigate('Homepage');
     } catch (error) {
         console.log(error)
     }

@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const usersSlice = createSlice ({
     name: "users",
     initialState: {
-        users: ""
+        users: ''
     },
     reducers: {
         addUsers: (state, action) => {

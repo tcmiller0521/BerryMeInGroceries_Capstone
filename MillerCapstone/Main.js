@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { useSelector } from 'react-redux';
 import LoginPage from './components/Authenication/Login/LoginPage';
 import RegisterPage from './components/Authenication/Registration/RegisterPage';
 import Homepage from './components/Homepage/Homepage';
@@ -20,6 +20,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { retrieveBudget } from './actions/budget';
 import { retrieveCards } from './actions/card';
 import { retrieveStores } from './actions/store';
+import { selectToken, selectUser } from './state/authSlice';
 
 
 const Stack = createNativeStackNavigator()
@@ -33,6 +34,10 @@ const Main = ({ index }) => {
   const [currentStoreId, setCurrentStoreId] = useState(0)
 
   const dispatch = useDispatch();
+
+  const user = useSelector(selectToken)
+  console.log("user", user)
+
 
   useEffect(() => {
     dispatch(retrieveLists())
@@ -55,8 +60,6 @@ const Main = ({ index }) => {
           screenOptions={{
             headerShown: false
           }}>
-          <Stack.Screen name="Login" component={LoginPage} />
-          <Stack.Screen name="Register" component={RegisterPage} />
           <Stack.Screen name="Homepage" component={Homepage} />
           <Stack.Screen name="Budget" component={BudgetPage} setCurrentBudgetId={setCurrentBudgetId} currentBudgetId={currentBudgetId}/>
           <Stack.Screen name="Lists" component={ListPage} setCurrentListId={setCurrentListId} currentListId={currentListId} />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userSignUp } from "../../../actions/user";
 
+
 const initialState = { email: '', password: ''};
 
 const RegisterForm = ({navigation}) => {
@@ -13,7 +14,7 @@ const RegisterForm = ({navigation}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(userSignUp(userData, navigation.navigate('Homepage')))
+        dispatch(userSignUp(userData, navigation))
     }
 
     return (

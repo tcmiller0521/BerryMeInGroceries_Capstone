@@ -4,11 +4,9 @@ import {store} from '../state/store/store'
 import { selectToken } from '../state/authSlice';
 import { useSelector } from 'react-redux'
 
-// console.log(JSON.parse(store.getState().auth.token))
-
 // API.interceptors.request.use((req) => {
-//     if (store.auth.token) {
-//         req.headers.Authorization = `Bearer ${JSON.parse(useSelector(selectToken))}`;
+//     if (store.getState().auth.token) {
+//         req.headers.Authorization = `Bearer ${JSON.parse(store.getState().auth.token)}`;
 //     }
 
 //     return req;
