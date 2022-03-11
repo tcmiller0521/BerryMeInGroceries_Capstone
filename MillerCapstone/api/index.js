@@ -1,5 +1,16 @@
 import axios from 'axios';
 const API = axios.create({ baseURL: 'http://10.0.2.2:5000' })
+import {store} from '../state/store/store'
+import { selectToken } from '../state/authSlice';
+import { useSelector } from 'react-redux'
+
+// API.interceptors.request.use((req) => {
+//     if (store.getState().auth.token) {
+//         req.headers.Authorization = `Bearer ${JSON.parse(store.getState().auth.token)}`;
+//     }
+
+//     return req;
+// })
 
 
 export const fetchLists = () => API.get('/list/get');

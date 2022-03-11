@@ -5,23 +5,26 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         auth: [],
+        token: "",
     },
     reducers: {
         loginUser: (state, action) => {
-           AsyncStorage.setItem('profile', JSON.stringify({...action.payload}));
+           state.token = JSON.stringify(action.payload);
+           console.log(state.token)
         },
         updateUser: (state, action) => {
-            state.user.map((userInfo) => (userInfo._id === action.payload._id ? action.payload : userInfo));
+            state.auth.map((userInfo) => (userInfo._id === action.payload._id ? action.payload : userInfo));
         },
         updatePassword: (state, action) => {
-            state.user.map((userInfo) => (userInfo._id === action.payload._id ? action.payload : userInfo));
+            state.auth.map((userInfo) => (userInfo._id === action.payload._id ? action.payload : userInfo));
         },
         getUser: (state, action) => {
-            state.user = action.payload
+            state.auth = action.payload
         },
     }
 });
 
 export const { loginUser, updateUser, updatePassword, getUser } = authSlice.actions;
 export const selectUser = (state) => state.auth.auth;
+export const selectToken = ( state ) => state.auth.token;
 export default authSlice.reducer;

@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-native";
 import { selectItemList } from "../../state/itemSlice";
@@ -7,6 +7,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { selectGroceryList } from "../../state/listSlice";
 import { removeItem } from '../../actions/items'
 import UpdateItemModal from "./UpdateItemModal";
+import { retrieveItems } from '../../actions/items'
 
 let colors = ["#FFC4D1", "#F185B3", "#A75889", "#7B6A9B", "#4F7CAC", "#5DD39E"]
 
@@ -16,48 +17,21 @@ const GroceryList = ({ index, allStores }) => {
     const allItems = useSelector(selectItemList);
     const dispatch = useDispatch();
 
-    let sum = 0
+    console.log("stores", allStores)
+
+    let sums = 0
 
     allItems.forEach(function (i) {
         if (i.listName === listInfo[index].listName) {
-            sum += i.price;
+            sums += i.price;
         }
     })
 
-    const ListEmptyComponent = () => {
-        return (
-            <>
-                <View style={groceryList.noItem}>
-                    <Text style={groceryList.noItemText}>
-                        No Items Yet
-                    </Text>
-                </View>
-            </>
-        )
-    }
+    let sum = sums.toFixed(2)
 
-    const RenderItem = ({ item }) => {
-        return (
-            <>
-                {listInfo[index].listName === item.listName ? //place items into separate lists
-                    <Swipeable renderRightActions={() => <RenderRight item={item} />}>
-                        <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
-                            <View style={[groceryList.columnOne, groceryList.itemColumnOne]}>
-                                <Text style={groceryList.itemText}>
-                                    {item.item}
-                                </Text>
-                            </View>
-                            <View style={groceryList.columnTwo}>
-                                <Text style={groceryList.itemText}>
-                                    ${item.price}
-                                </Text>
-                            </View>
-                        </View>
-                    </Swipeable> : null
-                }
-            </>
-        )
-    }
+    useEffect(() => {
+        dispatch(retrieveItems())
+    }, [dispatch])
 
     const RenderRight = ({ item }) => {
 
@@ -84,23 +58,71 @@ const GroceryList = ({ index, allStores }) => {
     return (
         <>
             <View style={groceryList.listContainer}>
-                {/* <View style={groceryList.container}>
-                    <View style={groceryList.storeContainer}>
-                        <Text style={groceryList.storeText}>
-                            Store One
-                        </Text>
+                <ScrollView>
+                    {allStores.map((store, i) => (
+                        <>
+                            <View key={i} style={groceryList.container}>
+                                <View style={[{ backgroundColor: colors[i % colors.length] }, groceryList.storeContainer]}>
+                                    <Text style={groceryList.storeText}>
+                                        {store.storeName}
+                                    </Text>
+                                </View>
+                            </View>
+                            {allItems.map((item, l) => (
+                                store.storeName === item.storeName ?
+                                    <>
+                                        {listInfo[index].listName === item.listName ?
+                                            <Swipeable key={l} renderRightActions={() => <RenderRight item={item} />}>
+                                                <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
+                                                    <View style={[groceryList.columnOne, groceryList.itemColumnOne]}>
+                                                        <Text style={groceryList.itemText}>
+                                                            {item.item}
+                                                        </Text>
+                                                    </View>
+                                                    <View style={groceryList.columnTwo}>
+                                                        <Text style={groceryList.itemText}>
+                                                            ${item.price}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </Swipeable> : null
+                                        }
+                                    </> : null
+                            ))}
+                        </>
+                    ))}
+                    <View style={groceryList.container}>
+                        <View style={[{ backgroundColor: "#363E44" }, groceryList.storeContainer]}>
+                            <Text style={groceryList.storeText}>
+                                Misc
+                            </Text>
+                        </View>
                     </View>
-                </View> */}
-                <View>
-                    <FlatList
-                        data={allItems}
-                        ListEmptyComponent={ListEmptyComponent}
-                        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
-                        keyExtractor={(item) => String(item._id)}
-                    />
-                </View>
+                    {allItems.map((item, k) => (
+                        !item.storeName ?
+                            <View key={k}>
+                                {listInfo[index].listName === item.listName ?
+                                    <Swipeable renderRightActions={() => <RenderRight item={item} />}>
+                                    <View style={[groceryList.itemContainer, groceryList.shadowProp]}>
+                                        <View style={[groceryList.columnOne, groceryList.itemColumnOne]}>
+                                            <Text style={groceryList.itemText}>
+                                                {item.item}
+                                            </Text>
+                                        </View>
+                                        <View style={groceryList.columnTwo}>
+                                            <Text style={groceryList.itemText}>
+                                                ${item.price}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </Swipeable> : null
+                                }
+                            </View> : null
+                    ))}
+                </ScrollView>
+
                 <View style={groceryList.container}>
-                    <View style={groceryList.storeContainer}>
+                    <View style={[{ backgroundColor: "#363E44" }, groceryList.storeContainer]}>
                         <View style={[groceryList.columnOne, groceryList.totalColumnOne]}>
                             <Text style={groceryList.itemText}>
                                 Total
@@ -121,6 +143,9 @@ const GroceryList = ({ index, allStores }) => {
 const groceryList = StyleSheet.create({
     listContainer: {
         height: 425,
+    },
+    flatListContainer: {
+        height: 350
     },
     noItem: {
         marginTop: 25,
@@ -170,13 +195,13 @@ const groceryList = StyleSheet.create({
     },
     storeContainer: {
         marginTop: 20,
+        marginBottom: 10,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
         width: 330,
         height: 35,
         borderRadius: 100 / 2,
-        backgroundColor: "#F4A261",
         justifyContent: "center",
     },
     storeText: {
@@ -228,3 +253,10 @@ const groceryList = StyleSheet.create({
 })
 
 export default GroceryList;
+
+{/* <FlatList
+                            data={allItems}
+                            // ListEmptyComponent={ListEmptyComponent}
+                            renderItem={StoreRenderItem}
+                            // keyExtractor={(item) => String(item._id)}
+                        /> */}

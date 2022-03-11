@@ -1,15 +1,19 @@
 import React, { Profiler, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 import { selectUserList } from "../../state/usersSlice";
+import { selectToken } from "../../state/authSlice";
 
 
 
 const HomepageBanner = ({ navigation }) => {
 
-    const userData = useSelector(selectUserList)
-    console.log(userData)
+    const user = useSelector(selectUserList)
+    console.log(user)
+    // const user = useSelector(selectToken)
+    // console.log(user)
+    // const userInfo = JSON.parse(user)
+    // console.log(userInfo)
 
     return (
         <>
@@ -18,12 +22,12 @@ const HomepageBanner = ({ navigation }) => {
                 onPress={() => navigation.navigate('Profile')}
                 >
                     <Image style={homepageBanner.userPic}
-                    source={require('../../Assets/images/Taylor_Avatar.png')}
+                    source={require('../../Assets/images/download.jpg')}
                     />
                 </TouchableOpacity>
                 <View style={homepageBanner.textContainer}>
                     <Text style={homepageBanner.headerText}>
-                        Welcome Back,
+                        Welcome Back, Guest
                     </Text>
                 </View>
             </View>

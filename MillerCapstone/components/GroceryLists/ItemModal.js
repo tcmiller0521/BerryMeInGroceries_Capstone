@@ -16,6 +16,7 @@ import { selectGroceryList } from "../../state/listSlice";
 import { Picker } from '@react-native-picker/picker'
 import { selectItemList } from "../../state/itemSlice";
 import { editBudget } from "../../actions/budget";
+import { selectBudgetList } from "../../state/budgetSlice";
 
 const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
     const dispatch = useDispatch();
@@ -37,30 +38,41 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
         setItemData({ item: "", price: "", listName: listInfo[index].listName });
     }
 
-    // const allItems = useSelector(selectItemList);
+    const allItems = useSelector(selectItemList);
 
-    // let sum = 0
+    let sums = 0
 
-    // allItems.forEach(function (i) {
-    //     if (i.listName === listInfo[index].listName) {
-    //         sum += i.price;
-    //     }
-    // })
+    allItems.forEach(function (i) {
+        if (i.listName === listInfo[index].listName) {
+            sums += i.price;
+        }
+    })
 
-    // const [budgetInfo, setBudgetInfo] = useState({spent: sum})
+    let sum = sums.toFixed(2)
+    console.log("budget sum", sum)
+
+    const budgetData = useSelector(selectBudgetList)
+    const budget = budgetData.find(budget => budget.budgetName === listInfo[index].budgetName)
+    const [budgetInfo, setBudgetInfo] = useState(budget)
+    const [currentBudgetId, setCurrentBudgetId] = useState(budget._id)
+
+    const handleChange = () => {
+        setBudgetInfo({
+            ...budgetInfo,
+            spent: sum
+        })
+    }
 
     // const updateBudget = () => {
-    //     if (listInfo[index].budgetName) {
-    //         console.log(budgetInfo)
-    //         dispatch(editBudget(budgetInfo))
-    //     } else {
-    //         console.log("error")
-    //     }
+    //     console.log(budgetInfo)
+    //         dispatch(editBudget(currentBudgetId, budgetInfo))
     // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createItemList(itemData));
+        handleChange();
+        dispatch(editBudget(currentBudgetId, budgetInfo))
         setModalVisible(!modalVisible);
         clear();
     }
@@ -103,7 +115,7 @@ const ItemModal = ({ setCurrentItemId, currentItemId, index, allStores }) => {
                                 onValueChange={(value, itemIndex) =>
                                     setItemData({ ...itemData, storeName: value })}
                             >
-                                <Picker.Item label="Select a store" value={null} />
+                                <Picker.Item label="Select a store" value={"no store"} />
                                 {allStores.map((store, i) => (
                                     <Picker.Item key={i} label={store.storeName} value={store.storeName} />
                                 ))}
